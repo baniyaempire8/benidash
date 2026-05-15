@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>BeniDash Nepal — Deliver Anything, Anywhere in Nepal</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --or:#E8622A; --or2:#FF8C5A; --dk:#0F0A06;
+  --card:#171208; --card2:#1F180A;
+  --wh:#fff; --cr:#FFFBF7; --wa:#FFF5E8;
+  --mu:#8A7A6A; --bo:#F0EAE0; --bo2:rgba(255,255,255,0.06);
+  --gr:#22C55E; --re:#EF4444; --ye:#F59E0B;
+  --bl:#3B82F6; --pu:#8B5CF6;
+  --dg:#050D08; --dkgr:#4CD964;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;background:#000;max-width:430px;margin:0 auto;box-shadow:0 0 60px rgba(0,0,0,0.5);}
+body.np{font-family:'Noto Sans Devanagari','DM Sans',sans-serif;}
+
+/* SCREENS */
+.screen{display:none;flex-direction:column;height:100vh;overflow:hidden;}
+.screen.active{display:flex;}
+.scroll{flex:1;overflow-y:auto;padding-bottom:80px;}
+::-webkit-scrollbar{display:none;}
+
+/* ── MODE SELECT ── */
+#mode-select{position:fixed;inset:0;z-index:1000;background:linear-gradient(160deg,#0A0604,#150A04);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 24px;overflow-y:auto;}
+.ms-logo{font-size:48px;margin-bottom:6px;}
+.ms-brand{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;margin-bottom:2px;}
+.ms-nepal{font-size:13px;color:var(--or);font-weight:700;margin-bottom:4px;}
+.ms-tag{font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:24px;text-align:center;line-height:1.6;}
+
+/* City selector */
+.city-selector{width:100%;max-width:340px;margin-bottom:16px;}
+.city-label{font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px;}
+.city-select{width:100%;padding:12px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:14px;color:#fff;font-size:14px;font-weight:600;font-family:inherit;outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff80' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
+.city-select option{background:#1A0A04;color:#fff;}
+
+.ms-cards{display:flex;flex-direction:column;gap:10px;width:100%;max-width:340px;}
+.ms-card{border-radius:18px;padding:16px 20px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:transform 0.2s,box-shadow 0.2s;}
+.ms-card:active{transform:scale(0.97);}
+.ms-card:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.4);}
+.ms-c1{background:linear-gradient(135deg,#E8622A,#FF8C5A);}
+.ms-c2{background:linear-gradient(135deg,#0D1A0F,#1A3020);border:1.5px solid rgba(76,217,100,0.2);}
+.ms-c3{background:linear-gradient(135deg,#1A0A2E,#2A1A4E);}
+.ms-c4{background:linear-gradient(135deg,#0A1A2E,#1A2A4E);border:1.5px solid rgba(59,130,246,0.2);}
+.ms-ct{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#fff;}
+.ms-cs{font-size:11px;color:rgba(255,255,255,0.55);margin-top:2px;}
+.ms-lang{display:flex;gap:6px;margin-top:18px;}
+.ms-lb{padding:6px 14px;border-radius:50px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,0.4);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;}
+.ms-lb.on{background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(255,255,255,0.3);}
+.ms-ver{font-size:10px;color:rgba(255,255,255,0.15);margin-top:12px;}
+.ms-live{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.25);border-radius:50px;font-size:11px;color:var(--gr);margin-top:10px;}
+.live-dot{width:6px;height:6px;background:var(--gr);border-radius:50%;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.3)}}
+
+/* SHARED TOP BAR */
+.top-bar{background:var(--wh);padding:44px 18px 12px;border-bottom:1px solid var(--bo);position:sticky;top:0;z-index:50;}
+.top-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.search-bar{display:flex;align-items:center;gap:8px;background:var(--wa);border-radius:13px;padding:9px 13px;}
+.search-bar input{border:none;background:transparent;font-size:13px;outline:none;flex:1;font-family:inherit;}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--wh);border-top:1px solid var(--bo);display:flex;justify-content:space-around;padding:8px 0 16px;z-index:90;}
+.bni{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:3px 12px;border-radius:11px;transition:all 0.2s;position:relative;}
+.bni.on{background:var(--wa);}
+.bni-icon{font-size:20px;}
+.bni-label{font-size:10px;font-weight:700;color:var(--mu);}
+.bni.on .bni-label{color:var(--or);}
+.bni-badge{position:absolute;top:1px;right:6px;background:var(--or);color:#fff;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+
+/* ══════════ CUSTOMER APP ══════════ */
+#ac{background:var(--cr);}
+
+/* Promo */
+.promos{display:flex;gap:10px;padding:12px 18px;overflow-x:auto;scrollbar-width:none;}
+.promo{min-width:220px;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.p1{background:linear-gradient(135deg,#E8622A,#FF8C5A);}
+.p2{background:linear-gradient(135deg,#1A6B3A,#2A9A58);}
+.p3{background:linear-gradient(135deg,#7C3AED,#A855F7);}
+.p4{background:linear-gradient(135deg,#0EA5E9,#38BDF8);}
+.pt{font-size:13px;font-weight:800;color:#fff;}
+.ps{font-size:10px;color:rgba(255,255,255,0.7);margin-top:2px;}
+
+/* Categories */
+.cats{display:flex;gap:8px;padding:4px 18px 12px;overflow-x:auto;scrollbar-width:none;}
+.cat{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 11px;border-radius:13px;border:1.5px solid var(--bo);background:var(--wh);cursor:pointer;flex-shrink:0;font-size:10px;font-weight:600;color:var(--mu);transition:all 0.2s;}
+.cat.on{background:var(--dk);border-color:var(--dk);color:#fff;}
+
+/* Merchant cards */
+.mlist{padding:0 18px 16px;display:flex;flex-direction:column;gap:10px;}
+.mc{background:var(--wh);border-radius:17px;overflow:hidden;border:1.5px solid var(--bo);cursor:pointer;transition:all 0.2s;}
+.mc:active{transform:scale(0.98);}
+.mb{height:90px;display:flex;align-items:center;justify-content:center;font-size:36px;position:relative;}
+.mbadge{position:absolute;top:7px;left:7px;padding:2px 7px;border-radius:50px;font-size:9px;font-weight:700;color:#fff;}
+.mtype{position:absolute;top:7px;right:7px;padding:2px 7px;border-radius:50px;font-size:9px;font-weight:700;background:rgba(0,0,0,0.4);color:#fff;}
+.mbody{padding:10px 13px;}
+.mn{font-size:14px;font-weight:800;margin-bottom:2px;}
+.mm{display:flex;gap:10px;font-size:10px;color:var(--mu);}
+
+/* Detail */
+.dban{height:130px;display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;}
+.dback{position:absolute;top:50px;left:12px;background:rgba(255,255,255,0.95);border:none;border-radius:50%;width:36px;height:36px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+.dinfo{background:var(--wh);padding:14px 18px;border-bottom:1px solid var(--bo);}
+.item{display:flex;align-items:center;gap:10px;padding:11px 18px;border-bottom:1px solid var(--bo);}
+.ie{font-size:32px;width:50px;height:50px;background:var(--wa);border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ii{flex:1;}
+.in{font-size:13px;font-weight:700;}
+.id{font-size:10px;color:var(--mu);margin-top:1px;}
+.ip{font-size:13px;font-weight:800;margin-top:3px;}
+.ab{width:30px;height:30px;background:var(--or);border:none;border-radius:50%;color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.qw{display:flex;align-items:center;gap:5px;background:var(--wa);border-radius:50px;padding:3px 4px;}
+.qb{width:24px;height:24px;background:var(--or);border:none;border-radius:50%;color:#fff;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.qn{font-size:12px;font-weight:800;min-width:16px;text-align:center;}
+
+/* Cart bar */
+.cbar{position:fixed;bottom:68px;left:50%;transform:translateX(-50%);width:calc(100% - 28px);max-width:402px;background:var(--dk);border-radius:17px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:100;cursor:pointer;transition:all 0.3s;}
+.cbar.h{transform:translateX(-50%) translateY(130px);opacity:0;pointer-events:none;}
+
+/* Cart/Order screens */
+.cart-s{padding:50px 18px 20px;}
+.sum-r{display:flex;justify-content:space-between;font-size:13px;color:var(--mu);margin-bottom:8px;}
+.sum-t{display:flex;justify-content:space-between;font-size:15px;font-weight:800;padding-top:10px;border-top:1px solid var(--bo);margin-top:4px;}
+.obtn{width:100%;padding:16px;background:var(--or);border:none;border-radius:16px;color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;margin-top:16px;}
+
+/* Track */
+#cm{width:100%;height:220px;border-radius:16px;}
+
+/* ══════════ DRIVER APP ══════════ */
+#ad{background:var(--dg);}
+#dm{position:absolute;inset:0;z-index:1;}
+.dot{position:absolute;top:0;left:0;right:0;z-index:10;padding:42px 16px 10px;background:linear-gradient(to bottom,rgba(5,13,8,0.96) 60%,transparent);}
+.dep{display:inline-flex;align-items:center;gap:8px;background:rgba(0,0,0,0.6);border:1px solid rgba(76,217,100,0.2);border-radius:50px;padding:7px 14px;backdrop-filter:blur(10px);}
+.den{font-family:'Syne',sans-serif;font-size:18px;font-weight:900;color:var(--dkgr);}
+.dtr{display:flex;justify-content:space-between;align-items:center;margin-top:8px;}
+.dss{background:rgba(0,0,0,0.65);backdrop-filter:blur(10px);border-radius:50px;padding:7px 14px;font-size:12px;color:rgba(255,255,255,0.7);display:inline-flex;align-items:center;gap:7px;margin-top:8px;}
+.dob{position:absolute;bottom:0;left:0;right:0;z-index:10;}
+.dsh{background:#0D1A0F;border-radius:22px 22px 0 0;padding:11px 18px 22px;border-top:1px solid rgba(76,217,100,0.1);}
+.dha{width:38px;height:4px;background:rgba(255,255,255,0.07);border-radius:2px;margin:0 auto 13px;}
+.dt{width:58px;height:30px;border-radius:50px;display:flex;align-items:center;padding:0 3px;cursor:pointer;transition:background 0.3s;}
+.dth{width:24px;height:24px;border-radius:50%;background:#fff;transition:transform 0.3s;box-shadow:0 2px 5px rgba(0,0,0,0.3);}
+.dnav{position:absolute;bottom:0;left:0;right:0;background:#0D1A0F;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-around;padding:9px 0 16px;z-index:20;}
+.dni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:3px 14px;}
+.dnico{font-size:20px;}
+.dnil{font-size:10px;font-weight:700;color:rgba(255,255,255,0.3);}
+.dni.on .dnil{color:var(--dkgr);}
+.dom{position:absolute;inset:0;background:rgba(0,0,0,0.85);z-index:200;display:flex;align-items:flex-end;}
+.dos{background:#0D1A0F;border-radius:22px 22px 0 0;padding:18px 18px 32px;width:100%;border-top:1px solid rgba(76,217,100,0.2);}
+.dab{flex:1;padding:14px;background:var(--dkgr);border:none;border-radius:13px;color:#000;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;}
+.ddb{width:46px;height:46px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:13px;color:rgba(255,255,255,0.4);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+/* ══════════ MERCHANT APP ══════════ */
+#am{background:var(--cr);}
+.mtb{background:var(--wh);padding:44px 18px 13px;border-bottom:1px solid var(--bo);position:sticky;top:0;z-index:50;}
+.msc{flex:1;overflow-y:auto;padding:14px 18px 88px;}
+.mstat{background:var(--wh);border-radius:13px;padding:13px;border:1.5px solid var(--bo);text-align:center;}
+.mstat-n{font-family:'Syne',sans-serif;font-size:20px;font-weight:900;}
+.mstat-l{font-size:10px;color:var(--mu);margin-top:2px;}
+.mo{background:var(--wh);border-radius:16px;border:1.5px solid var(--bo);overflow:hidden;margin-bottom:10px;}
+.moh{padding:10px 13px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bo);}
+.mob{padding:10px 13px;}
+.msp{padding:3px 8px;border-radius:50px;font-size:9px;font-weight:700;}
+.spn{background:rgba(232,98,42,0.1);color:var(--or);}
+.spp{background:rgba(245,158,11,0.1);color:var(--ye);}
+.spr{background:rgba(34,197,94,0.1);color:var(--gr);}
+.mab{flex:1;padding:10px;background:var(--gr);border:none;border-radius:11px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;}
+.mrb{flex:1;padding:10px;background:var(--or);border:none;border-radius:11px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;}
+.mrej{padding:10px 12px;background:var(--cr);border:1.5px solid var(--bo);border-radius:11px;color:var(--mu);font-size:11px;cursor:pointer;font-family:inherit;}
+.mrnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--wh);border-top:1px solid var(--bo);display:flex;justify-content:space-around;padding:8px 0 15px;z-index:90;}
+.mrni{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:3px 11px;border-radius:10px;transition:all 0.2s;}
+.mrni.on{background:var(--wa);}
+.mrni-icon{font-size:20px;}
+.mrni-label{font-size:10px;font-weight:700;color:var(--mu);}
+.mrni.on .mrni-label{color:var(--or);}
+.mnotif{position:fixed;top:50px;left:50%;transform:translateX(-50%);width:calc(100% - 24px);max-width:406px;background:var(--wh);border-radius:20px;padding:16px;border:2px solid var(--or);box-shadow:0 20px 50px rgba(232,98,42,0.25);z-index:300;animation:sd 0.4s ease;}
+@keyframes sd{from{opacity:0;transform:translateX(-50%) translateY(-16px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* ══════════ JOIN MERCHANT SCREEN ══════════ */
+#join{background:var(--cr);}
+.join-hero{background:linear-gradient(135deg,var(--dk),#1A0A04);padding:60px 24px 40px;text-align:center;position:relative;overflow:hidden;}
+.join-hero::before{content:'🏪';font-size:15rem;position:absolute;opacity:0.04;top:50%;left:50%;transform:translate(-50%,-50%);}
+.join-title{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;margin-bottom:6px;position:relative;}
+.join-sub{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.7;position:relative;}
+.join-content{padding:24px 20px 100px;}
+.join-card{background:var(--wh);border-radius:18px;padding:20px;border:1.5px solid var(--bo);margin-bottom:16px;}
+.join-card h3{font-size:15px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.form-group{margin-bottom:12px;}
+.form-label{font-size:12px;font-weight:700;color:var(--mu);margin-bottom:5px;display:block;}
+.form-input{width:100%;padding:11px 14px;border:1.5px solid var(--bo);border-radius:12px;font-size:13px;font-family:inherit;outline:none;background:var(--cr);color:var(--dk);transition:border-color 0.2s;}
+.form-input:focus{border-color:var(--or);}
+.form-select{width:100%;padding:11px 14px;border:1.5px solid var(--bo);border-radius:12px;font-size:13px;font-family:inherit;outline:none;background:var(--cr);color:var(--dk);cursor:pointer;appearance:none;}
+.submit-btn{width:100%;padding:16px;background:var(--or);border:none;border-radius:16px;color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;transition:all 0.2s;}
+.submit-btn:active{transform:scale(0.98);}
+.benefit-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--bo);font-size:13px;}
+.benefit-item:last-child{border-bottom:none;}
+
+/* TOAST */
+.toast{position:fixed;top:50px;left:50%;transform:translateX(-50%);background:var(--dk);color:#fff;padding:10px 18px;border-radius:50px;font-size:13px;font-weight:700;z-index:999;white-space:nowrap;transition:opacity 0.3s;box-shadow:0 8px 20px rgba(0,0,0,0.3);}
+
+/* BACK BTN */
+.back-to-menu{position:fixed;bottom:90px;right:16px;z-index:500;width:40px;height:40px;background:rgba(0,0,0,0.7);border:1.5px solid rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;backdrop-filter:blur(10px);}
+</style>
+</head>
+<body id="body">
+
+<!-- ══════════ MODE SELECT ══════════ -->
+<div id="mode-select">
+  <div class="ms-logo">🛵</div>
+  <div class="ms-brand">BeniDash Nepal</div>
+  <div class="ms-nepal">नेपालको डेलिभरी एप 🇳🇵</div>
+  <div class="ms-tag" data-en="Deliver Anything, Anywhere in Nepal — Food, Grocery, Medicine & More!" data-np="नेपालमा जहाँसुकै — खाना, किराना, औषधि र थप!">Deliver Anything, Anywhere in Nepal<br/>Food, Grocery, Medicine & More!</div>
+
+  <!-- City Selector -->
+  <div class="city-selector">
+    <div class="city-label" data-en="📍 Select Your City / District" data-np="📍 आफ्नो शहर / जिल्ला छान्नुस्">📍 Select Your City / District</div>
+    <select class="city-select" id="city-select" onchange="setCity(this.value)">
+      <optgroup label="🏔️ Gandaki Province / गण्डकी प्रदेश">
+        <option value="beni">Beni — बेनी (Myagdi District) 🟢 Active</option>
+        <option value="pokhara">Pokhara — पोखरा (Coming Soon)</option>
+        <option value="baglung">Baglung — बाग्लुङ (Coming Soon)</option>
+        <option value="mustang">Mustang — मुस्ताङ (Coming Soon)</option>
+      </optgroup>
+      <optgroup label="🏙️ Bagmati Province / बागमती प्रदेश">
+        <option value="kathmandu">Kathmandu — काठमाण्डौ (Coming Soon)</option>
+        <option value="lalitpur">Lalitpur — ललितपुर (Coming Soon)</option>
+        <option value="bhaktapur">Bhaktapur — भक्तपुर (Coming Soon)</option>
+      </optgroup>
+      <optgroup label="🌾 Lumbini Province / लुम्बिनी प्रदेश">
+        <option value="butwal">Butwal — बुटवल (Coming Soon)</option>
+        <option value="pokhara2">Rupandehi — रूपन्देही (Coming Soon)</option>
+      </optgroup>
+      <optgroup label="🌊 Madhesh Province / मधेश प्रदेश">
+        <option value="janakpur">Janakpur — जनकपुर (Coming Soon)</option>
+        <option value="birgunj">Birgunj — वीरगञ्ज (Coming Soon)</option>
+      </optgroup>
+      <optgroup label="🏔️ Koshi Province / कोशी प्रदेश">
+        <option value="biratnagar">Biratnagar — विराटनगर (Coming Soon)</option>
+        <option value="dharan">Dharan — धरान (Coming Soon)</option>
+      </optgroup>
+    </select>
+  </div>
+
+  <div class="ms-cards">
+    <div class="ms-card ms-c1" onclick="launch('c')">
+      <span style="font-size:28px;">📱</span>
+      <div>
+        <div class="ms-ct" data-en="Customer — Order Now" data-np="ग्राहक — अहिले अर्डर">Customer — Order Now</div>
+        <div class="ms-cs" data-en="Food, Grocery, Medicine & More" data-np="खाना, किराना, औषधि र थप">Food, Grocery, Medicine & More</div>
+      </div>
+      <span style="margin-left:auto;color:rgba(255,255,255,0.6);font-size:18px;">›</span>
+    </div>
+    <div class="ms-card ms-c2" onclick="launch('d')">
+      <span style="font-size:28px;">🛵</span>
+      <div>
+        <div class="ms-ct" data-en="Rider / Delivery Partner" data-np="राइडर / डेलिभरी साझेदार">Rider / Delivery Partner</div>
+        <div class="ms-cs" data-en="Go online any 3 hours — earn NPR 400-700/day" data-np="जब मन लाग्छ ३ घण्टा — NPR ४००-७०० कमाउ">Any 3 hours — Earn NPR 400-700/day</div>
+      </div>
+      <span style="margin-left:auto;color:rgba(76,217,100,0.4);font-size:18px;">›</span>
+    </div>
+    <div class="ms-card ms-c3" onclick="launch('m')">
+      <span style="font-size:28px;">🏪</span>
+      <div>
+        <div class="ms-ct" data-en="Merchant — Manage Orders" data-np="मर्चेन्ट — अर्डर व्यवस्थापन">Merchant — Manage Orders</div>
+        <div class="ms-cs" data-en="Restaurant, Shop, Pharmacy, Any Business" data-np="रेस्टुरेन्ट, पसल, फार्मेसी, जुनसुकै व्यवसाय">Restaurant, Shop, Pharmacy, Any Business</div>
+      </div>
+      <span style="margin-left:auto;color:rgba(255,255,255,0.2);font-size:18px;">›</span>
+    </div>
+    <div class="ms-card ms-c4" onclick="launch('j')">
+      <span style="font-size:28px;">📋</span>
+      <div>
+        <div class="ms-ct" data-en="Become a Merchant Partner" data-np="मर्चेन्ट साझेदार बन्नुस्">Become a Merchant Partner</div>
+        <div class="ms-cs" data-en="Apply to list your business on BeniDash Nepal" data-np="BeniDash Nepal मा आफ्नो व्यवसाय सूचीबद्ध गर्न आवेदन">Apply to list your business — FREE for 3 months!</div>
+      </div>
+      <span style="margin-left:auto;color:rgba(59,130,246,0.4);font-size:18px;">›</span>
+    </div>
+  </div>
+
+  <div class="ms-live">
+    <div class="live-dot"></div>
+    <span data-en="Live in Beni, Myagdi 🟢 — Expanding all Nepal" data-np="बेनी, मयागडीमा लाइभ 🟢 — नेपालभर विस्तार">Live in Beni, Myagdi — Expanding all Nepal</span>
+  </div>
+
+  <div class="ms-lang">
+    <button class="ms-lb on" onclick="setLang('en')">English</button>
+    <button class="ms-lb" onclick="setLang('np')">नेपाली</button>
+  </div>
+  <div class="ms-ver">BeniDash Nepal v2.0 · Baniya Empire · Beni, Myagdi 🇳🇵</div>
+</div>
+
+<!-- ══════════ CUSTOMER APP ══════════ -->
+<div class="screen" id="ac">
+  <div class="top-bar">
+    <div class="top-row">
+      <div>
+        <div style="font-size:11px;color:var(--mu);" data-en="Delivering to" data-np="डेलिभरी">Delivering to</div>
+        <div style="font-size:15px;font-weight:800;">📍 <span id="city-display">Beni Bazaar</span></div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button onclick="setLang(lang==='en'?'np':'en')" style="background:var(--wa);border:none;border-radius:50px;padding:5px 9px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--mu);" id="c-lb">NP</button>
+        <button onclick="showCart()" style="position:relative;background:var(--or);border:none;border-radius:50%;width:36px;height:36px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+          🛒<span id="cbadge" style="display:none;position:absolute;top:-3px;right:-3px;background:var(--dk);color:#fff;border-radius:50%;width:14px;height:14px;font-size:8px;font-weight:800;align-items:center;justify-content:center;"></span>
+        </button>
+      </div>
+    </div>
+    <div class="search-bar">
+      <span style="font-size:14px;color:var(--mu);">🔍</span>
+      <input id="si" placeholder="Search merchants, products..." oninput="filterM()"/>
+    </div>
+  </div>
+
+  <div class="scroll" id="chome">
+    <!-- Promos -->
+    <div class="promos">
+      <div class="promo p1"><span style="font-size:24px;">🎉</span><div><div class="pt" data-en="Free Delivery!" data-np="निःशुल्क डेलिभरी!">Free Delivery!</div><div class="ps">Code: BENI1</div></div></div>
+      <div class="promo p2"><span style="font-size:24px;">🏪</span><div><div class="pt" data-en="New Merchants!" data-np="नयाँ मर्चेन्ट!">New Merchants!</div><div class="ps" data-en="More shops joining daily" data-np="दैनिक थप पसल">More joining daily</div></div></div>
+      <div class="promo p3"><span style="font-size:24px;">💊</span><div><div class="pt" data-en="Medicine Delivery" data-np="औषधि डेलिभरी">Medicine Delivery</div><div class="ps" data-en="Fast & safe" data-np="छिटो र सुरक्षित">Fast & safe</div></div></div>
+      <div class="promo p4"><span style="font-size:24px;">🇳🇵</span><div><div class="pt" data-en="All Nepal Soon!" data-np="चाँडै नेपालभर!">All Nepal Soon!</div><div class="ps" data-en="Expanding citywide" data-np="शहरव्यापी विस्तार">Expanding citywide</div></div></div>
+    </div>
+
+    <!-- Greeting -->
+    <div style="padding:2px 18px 10px;font-size:17px;font-weight:800;" data-en="What do you need? 🛵" data-np="के चाहिन्छ? 🛵">What do you need? 🛵</div>
+
+    <!-- Categories -->
+    <div class="cats" id="c-cats">
+      <div class="cat on" onclick="setCat('all',this)">🛍️ <span data-en="All" data-np="सबै">All</span></div>
+      <div class="cat" onclick="setCat('food',this)">🍛 <span data-en="Food" data-np="खाना">Food</span></div>
+      <div class="cat" onclick="setCat('grocery',this)">🛒 <span data-en="Grocery" data-np="किराना">Grocery</span></div>
+      <div class="cat" onclick="setCat('medicine',this)">💊 <span data-en="Medicine" data-np="औषधि">Medicine</span></div>
+      <div class="cat" onclick="setCat('momo',this)">🥟 <span data-en="Momo" data-np="मम">Momo</span></div>
+      <div class="cat" onclick="setCat('drinks',this)">☕ <span data-en="Drinks" data-np="पेय">Drinks</span></div>
+      <div class="cat" onclick="setCat('bakery',this)">🍞 <span data-en="Bakery" data-np="बेकरी">Bakery</span></div>
+      <div class="cat" onclick="setCat('vegetables',this)">🥦 <span data-en="Vegetables" data-np="तरकारी">Vegetables</span></div>
+      <div class="cat" onclick="setCat('meat',this)">🥩 <span data-en="Meat" data-np="मासु">Meat</span></div>
+      <div class="cat" onclick="setCat('electronics',this)">📱 <span data-en="Electronics" data-np="इलेक्ट्रोनिक">Electronics</span></div>
+      <div class="cat" onclick="setCat('clothing',this)">👗 <span data-en="Clothing" data-np="कपडा">Clothing</span></div>
+      <div class="cat" onclick="setCat('gifts',this)">🎁 <span data-en="Gifts" data-np="उपहार">Gifts</span></div>
+    </div>
+
+    <div style="padding:0 18px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:14px;font-weight:800;" data-en="Merchants Near You" data-np="नजिकका मर्चेन्टहरू">Merchants Near You</span>
+      <span style="font-size:11px;color:var(--or);font-weight:600;cursor:pointer;" onclick="launch('j')" data-en="+ Add Your Shop" data-np="+ आफ्नो पसल थप्नुस्">+ Add Your Shop</span>
+    </div>
+    <div class="mlist" id="ml"></div>
+  </div>
+
+  <!-- Detail, Cart, Track screens -->
+  <div id="cdet" style="display:none;" class="scroll"></div>
+  <div id="ccart" style="display:none;" class="scroll"></div>
+  <div id="ctrack" style="display:none;" class="scroll"></div>
+
+  <!-- Cart bar -->
+  <div class="cbar h" id="cbar" onclick="showCart()">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span style="background:var(--or);color:#fff;border-radius:7px;padding:2px 8px;font-size:11px;font-weight:800;" id="cbc">0</span>
+      <span style="color:#fff;font-size:13px;font-weight:600;" data-en="View Cart" data-np="कार्ट हेर्नुस्">View Cart</span>
+    </div>
+    <span style="color:var(--or);font-weight:800;font-size:13px;" id="cbt">NPR 0 →</span>
+  </div>
+
+  <div class="bnav">
+    <div class="bni on" id="n-home" onclick="showHome()"><span class="bni-icon">🏠</span><span class="bni-label" data-en="Home" data-np="होम">Home</span></div>
+    <div class="bni" id="n-cart" onclick="showCart()"><span class="bni-icon">🛒</span><span class="bni-label" data-en="Cart" data-np="कार्ट">Cart</span></div>
+    <div class="bni" id="n-track" onclick="showTrack()"><span class="bni-icon">📦</span><span class="bni-label" data-en="Track" data-np="ट्र्याक">Track</span></div>
+    <div class="bni" id="n-prof" onclick="showToast('Profile coming soon! 👤')"><span class="bni-icon">👤</span><span class="bni-label" data-en="Profile" data-np="प्रोफाइल">Profile</span></div>
+  </div>
+</div>
+
+<!-- ══════════ DRIVER APP ══════════ -->
+<div class="screen" id="ad">
+  <div id="dm"></div>
+  <div class="dot">
+    <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+      <span style="font-size:11px;font-weight:700;color:#fff;">9:41</span>
+      <span style="font-size:10px;color:rgba(255,255,255,0.3);">●●● 🔋</span>
+    </div>
+    <div class="dtr">
+      <div class="dep">
+        <div class="den" id="de">NPR 0</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);"><span id="doc">0</span> <span data-en="orders" data-np="अर्डर">orders</span></div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button onclick="setLang(lang==='en'?'np':'en')" style="background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:4px 8px;color:rgba(255,255,255,0.4);font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;" id="d-lb">NP</button>
+        <div class="dt" id="dtr2" onclick="toggleD()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.08);">
+          <div class="dth" id="dth"></div>
+        </div>
+      </div>
+    </div>
+    <div class="dss" id="dss">
+      <div style="width:7px;height:7px;border-radius:50%;background:var(--mu);" id="ddot"></div>
+      <span id="dst" data-en="Tap toggle to go online" data-np="अनलाइन जान ट्याप गर्नुस्">Tap toggle to go online</span>
+    </div>
+  </div>
+  <div class="dob">
+    <div class="dsh"><div class="dha"></div><div id="dsc"></div></div>
+    <div class="dnav">
+      <div class="dni on"><span class="dnico">🗺️</span><span class="dnil" data-en="Map" data-np="नक्सा">Map</span></div>
+      <div class="dni"><span class="dnico">📦</span><span class="dnil" data-en="Active" data-np="सक्रिय">Active</span></div>
+      <div class="dni"><span class="dnico">💰</span><span class="dnil" data-en="Earn" data-np="कमाइ">Earn</span></div>
+      <div class="dni"><span class="dnico">👤</span><span class="dnil" data-en="Profile" data-np="प्रोफाइल">Profile</span></div>
+    </div>
+  </div>
+  <div class="dom" id="dom" style="display:none;">
+    <div class="dos">
+      <div style="width:38px;height:4px;background:rgba(255,255,255,0.07);border-radius:2px;margin:0 auto 14px;"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div>
+          <div style="font-size:11px;color:var(--dkgr);font-weight:700;margin-bottom:2px;">🆕 <span data-en="NEW ORDER!" data-np="नयाँ अर्डर!">NEW ORDER!</span></div>
+          <div style="font-size:17px;font-weight:900;color:#fff;" id="dom-m">🏪 Beni Kitchen</div>
+        </div>
+        <div style="position:relative;width:46px;height:46px;">
+          <svg width="46" height="46" style="transform:rotate(-90deg);">
+            <circle cx="23" cy="23" r="19" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="4"/>
+            <circle cx="23" cy="23" r="19" fill="none" id="dtc" stroke="#4CD964" stroke-width="4" stroke-dasharray="119.4" stroke-dashoffset="0" stroke-linecap="round" style="transition:stroke-dashoffset 1s linear;"/>
+          </svg>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:var(--dkgr);" id="dtn">25</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border-radius:13px;padding:12px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.05);font-size:12px;" id="dom-info"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding:10px 13px;background:rgba(76,217,100,0.07);border-radius:12px;border:1px solid rgba(76,217,100,0.12);">
+        <span style="font-size:12px;color:rgba(255,255,255,0.35);" data-en="Your earnings" data-np="तपाईंको कमाइ">Your earnings</span>
+        <span style="font-size:22px;font-weight:900;color:var(--dkgr);" id="dom-earn">NPR 70</span>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="dab" onclick="dAccept()">✅ <span data-en="Accept" data-np="स्वीकार">Accept</span></button>
+        <button class="ddb" onclick="dDecline()">✕</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MERCHANT APP ══════════ -->
+<div class="screen" id="am">
+  <div class="mtb">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div>
+        <div style="font-size:11px;color:var(--mu);" data-en="Merchant Dashboard" data-np="मर्चेन्ट ड्यासबोर्ड">Merchant Dashboard</div>
+        <div style="font-size:16px;font-weight:800;" id="mname">Beni Kitchen 🍛</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button onclick="setLang(lang==='en'?'np':'en')" style="background:var(--cr);border:1.5px solid var(--bo);border-radius:50px;padding:5px 9px;color:var(--mu);font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;" id="r-lb">NP</button>
+        <div style="width:50px;height:26px;border-radius:50px;display:flex;align-items:center;padding:0 3px;cursor:pointer;transition:background 0.3s;flex-shrink:0;" id="rtgl" onclick="toggleR()" style="background:var(--bo);">
+          <div style="width:20px;height:20px;border-radius:50%;background:#fff;transition:transform 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2);" id="rtglth"></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:7px;">
+      <div style="width:7px;height:7px;border-radius:50%;background:var(--re);" id="rdot"></div>
+      <span style="font-size:13px;font-weight:800;" id="rstatus" data-en="🔴 Closed" data-np="🔴 बन्द">🔴 Closed</span>
+    </div>
+  </div>
+  <div class="msc" id="rc"></div>
+  <div id="rnotif" style="display:none;"></div>
+  <div class="mrnav">
+    <div class="mrni on"><span class="mrni-icon">🏠</span><span class="mrni-label" data-en="Dashboard" data-np="ड्यासबोर्ड">Dashboard</span></div>
+    <div class="mrni"><span class="mrni-icon">📋</span><span class="mrni-label" data-en="Orders" data-np="अर्डर">Orders</span></div>
+    <div class="mrni"><span class="mrni-icon">🛍️</span><span class="mrni-label" data-en="Products" data-np="उत्पादन">Products</span></div>
+    <div class="mrni"><span class="mrni-icon">📊</span><span class="mrni-label" data-en="Stats" data-np="तथ्याङ्क">Stats</span></div>
+  </div>
+</div>
+
+<!-- ══════════ JOIN MERCHANT SCREEN ══════════ -->
+<div class="screen" id="join">
+  <div class="join-hero">
+    <div style="font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px;position:relative;" data-en="Business Opportunity" data-np="व्यापार अवसर">Business Opportunity</div>
+    <div class="join-title" data-en="List Your Business on BeniDash Nepal" data-np="BeniDash Nepal मा आफ्नो व्यवसाय राख्नुस्">List Your Business<br/>on BeniDash Nepal 🇳🇵</div>
+    <div class="join-sub" style="margin-top:8px;" data-en="Any business — restaurant, shop, pharmacy, vegetable vendor, bakery — can join BeniDash Nepal. First 3 months: 0% commission!" data-np="जुनसुकै व्यवसाय — रेस्टुरेन्ट, पसल, फार्मेसी, तरकारी विक्रेता, बेकरी — BeniDash Nepal मा सामेल हुन सक्छ। पहिलो ३ महिना: ०% कमिसन!">Any business can join — First 3 months FREE!</div>
+  </div>
+
+  <div class="join-content scroll">
+    <!-- Benefits -->
+    <div class="join-card">
+      <h3>✨ <span data-en="Why Join BeniDash?" data-np="BeniDash मा किन सामेल हुने?">Why Join BeniDash?</span></h3>
+      <div class="benefit-item"><span style="font-size:18px;">💰</span><div><div style="font-weight:700;font-size:13px;" data-en="More Sales — Reach customers at home!" data-np="बढी बिक्री — घरमा ग्राहकसम्म पुग्नुस्!">More Sales — Reach customers at home!</div><div style="font-size:11px;color:var(--mu);" data-en="Customers order from their phone — you just cook!" data-np="ग्राहकले फोनबाट अर्डर — तपाईं बनाउनुस् मात्र!">Customers order from phone — you just prepare!</div></div></div>
+      <div class="benefit-item"><span style="font-size:18px;">🚫</span><div><div style="font-weight:700;font-size:13px;" data-en="No Delivery Hassle — We handle it!" data-np="डेलिभरीको झन्झट छैन — हामी गर्छौं!">No Delivery Hassle — We handle it!</div><div style="font-size:11px;color:var(--mu);" data-en="BeniDash riders pick up and deliver. You focus on your business." data-np="BeniDash राइडरले उठाएर डेलिभर गर्छ। तपाईं व्यवसायमा ध्यान दिनुस्।">Our riders deliver — you focus on business.</div></div></div>
+      <div class="benefit-item"><span style="font-size:18px;">🎉</span><div><div style="font-weight:700;font-size:13px;" data-en="First 3 Months: 0% Commission!" data-np="पहिलो ३ महिना: ०% कमिसन!">First 3 Months: 0% Commission!</div><div style="font-size:11px;color:var(--mu);" data-en="Try BeniDash completely free for 3 months. After: only 10%." data-np="३ महिना पूर्णतः निःशुल्क। पछि: मात्र १०%।">Try free for 3 months. Then only 10%.</div></div></div>
+      <div class="benefit-item"><span style="font-size:18px;">📱</span><div><div style="font-weight:700;font-size:13px;" data-en="Simple Merchant App — Easy to Use!" data-np="सरल मर्चेन्ट एप — प्रयोग गर्न सजिलो!">Simple Merchant App — Easy to Use!</div><div style="font-size:11px;color:var(--mu);" data-en="Orders appear on your phone. Accept with one tap." data-np="अर्डर फोनमा देखिन्छ। एक ट्यापमा स्वीकार।">Orders on your phone. Accept with one tap.</div></div></div>
+      <div class="benefit-item" style="border:none;"><span style="font-size:18px;">🇳🇵</span><div><div style="font-weight:700;font-size:13px;" data-en="Available All Over Nepal Soon!" data-np="चाँडै नेपालभर उपलब्ध!">Available All Over Nepal Soon!</div><div style="font-size:11px;color:var(--mu);" data-en="Start in your city now — grow with BeniDash across Nepal!" data-np="अहिले आफ्नो शहरमा सुरु — BeniDash सँग नेपालभर बढ्नुस्!">Start in your city — grow across Nepal!</div></div></div>
+    </div>
+
+    <!-- Application Form -->
+    <div class="join-card">
+      <h3>📋 <span data-en="Merchant Application Form" data-np="मर्चेन्ट आवेदन फारम">Merchant Application Form</span></h3>
+      <div class="form-group">
+        <label class="form-label" data-en="Business Name (व्यवसायको नाम)" data-np="व्यवसायको नाम">Business Name (व्यवसायको नाम) *</label>
+        <input class="form-input" id="f-bname" placeholder="e.g. Beni Kitchen / बेनी किचेन"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-en="Business Type (व्यवसायको प्रकार)" data-np="व्यवसायको प्रकार">Business Type *</label>
+        <select class="form-select" id="f-btype">
+          <option value="">-- Select / छान्नुस् --</option>
+          <option value="food">🍛 Restaurant / Food Shop</option>
+          <option value="grocery">🛒 Grocery / Kiryana Store</option>
+          <option value="medicine">💊 Pharmacy / Medicine</option>
+          <option value="momo">🥟 Momo / Snack Shop</option>
+          <option value="bakery">🍞 Bakery / Sweet Shop</option>
+          <option value="vegetables">🥦 Vegetable / Fruit Vendor</option>
+          <option value="meat">🥩 Meat / Dairy Shop</option>
+          <option value="drinks">☕ Tea / Beverages</option>
+          <option value="electronics">📱 Electronics / Mobile</option>
+          <option value="clothing">👗 Clothing / Fashion</option>
+          <option value="gifts">🎁 Gifts / Stationery</option>
+          <option value="hardware">🔧 Hardware / Tools</option>
+          <option value="other">🏪 Other Business</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-en="City / District (शहर / जिल्ला)" data-np="शहर / जिल्ला">City / District *</label>
+        <select class="form-select" id="f-city">
+          <option value="beni">Beni — बेनी (Myagdi) 🟢</option>
+          <option value="pokhara">Pokhara — पोखरा</option>
+          <option value="kathmandu">Kathmandu — काठमाण्डौ</option>
+          <option value="other">Other / अन्य</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-en="Business Address (ठेगाना)" data-np="ठेगाना">Business Address *</label>
+        <input class="form-input" id="f-addr" placeholder="Street / Ward / Area"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-en="Owner Phone Number (फोन नम्बर)" data-np="फोन नम्बर">Owner Phone Number *</label>
+        <input class="form-input" id="f-phone" placeholder="+977 984XXXXXXX" type="tel"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-en="Owner Name (मालिकको नाम)" data-np="मालिकको नाम">Owner Name</label>
+        <input class="form-input" id="f-oname" placeholder="Your full name / पूरा नाम"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-en="What do you sell? (के बेच्नुहुन्छ?)" data-np="के बेच्नुहुन्छ?">What do you sell? (brief)</label>
+        <input class="form-input" id="f-sell" placeholder="e.g. Dal Bhat, Momo, Medicine..."/>
+      </div>
+      <button class="submit-btn" onclick="submitMerchant()">
+        🚀 <span data-en="Apply to Join BeniDash Nepal" data-np="BeniDash Nepal मा सामेल हुन आवेदन">Apply to Join BeniDash Nepal</span>
+      </button>
+      <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--mu);" data-en="We will contact you within 24 hours via WhatsApp!" data-np="हामी २४ घण्टाभित्र WhatsApp मार्फत सम्पर्क गर्नेछौं!">We will contact you within 24 hours via WhatsApp! 📱</div>
+    </div>
+
+    <!-- Commission tiers -->
+    <div class="join-card">
+      <h3>💰 <span data-en="Commission Plans" data-np="कमिसन योजनाहरू">Commission Plans</span></h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:rgba(34,197,94,0.08);border:1.5px solid rgba(34,197,94,0.2);border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:11px;color:var(--gr);font-weight:700;margin-bottom:4px;" data-en="FIRST 3 MONTHS" data-np="पहिलो ३ महिना">FIRST 3 MONTHS</div>
+          <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:900;color:var(--gr);">0%</div>
+          <div style="font-size:11px;color:var(--mu);margin-top:4px;" data-en="Commission — FREE!" data-np="कमिसन — निःशुल्क!">Commission — FREE!</div>
+        </div>
+        <div style="background:rgba(232,98,42,0.08);border:1.5px solid rgba(232,98,42,0.2);border-radius:14px;padding:14px;text-align:center;">
+          <div style="font-size:11px;color:var(--or);font-weight:700;margin-bottom:4px;" data-en="AFTER 3 MONTHS" data-np="३ महिना पछि">AFTER 3 MONTHS</div>
+          <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:900;color:var(--or);">10%</div>
+          <div style="font-size:11px;color:var(--mu);margin-top:4px;" data-en="Per order only" data-np="प्रति अर्डर मात्र">Per order only</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Back button -->
+<button class="back-to-menu" id="bkbtn" style="display:none;" onclick="goBack()">⌂</button>
+
+<script>
+// ─── NEPAL CITIES DATA ──────────────────────────────────────────────────────
+const CITY_COORDS = {
+  beni:      {lat:28.3449, lng:83.5332, name:"Beni Bazaar", np:"बेनी बजार"},
+  pokhara:   {lat:28.2096, lng:83.9856, name:"Pokhara",     np:"पोखरा"},
+  kathmandu: {lat:27.7172, lng:85.3240, name:"Kathmandu",   np:"काठमाण्डौ"},
+  baglung:   {lat:28.2664, lng:83.5887, name:"Baglung",     np:"बाग्लुङ"},
+  butwal:    {lat:27.7006, lng:83.4532, name:"Butwal",      np:"बुटवल"},
+  janakpur:  {lat:26.7288, lng:85.9281, name:"Janakpur",    np:"जनकपुर"},
+  biratnagar:{lat:26.4525, lng:87.2718, name:"Biratnagar",  np:"विराटनगर"},
+};
+
+// ─── MERCHANT DATA ──────────────────────────────────────────────────────────
+const MERCHANTS = [
+  {id:"m1",cat:"food",name:"Beni Kitchen",np:"बेनी किचेन",tag:"Nepali Food",tagNp:"नेपाली खाना",rating:4.8,reviews:312,time:"20-30",emoji:"🍛",color:"#E8622A",badge:"Popular",badgeNp:"लोकप्रिय",type:"Restaurant",typeNp:"रेस्टुरेन्ट",city:"beni",
+    items:[{id:"i1",name:"Dal Bhat Tarkari",np:"दाल भात तरकारी",price:180,desc:"Full meal",emoji:"🍛",pop:true},{id:"i2",name:"Chicken Curry",np:"कुखुराको करी",price:250,desc:"Spiced chicken",emoji:"🍗",pop:false},{id:"i3",name:"Goat Curry",np:"खसीको मासु",price:320,desc:"Traditional",emoji:"🥘",pop:true},{id:"i4",name:"Masala Tea",np:"मसला चिया",price:40,desc:"Spiced tea",emoji:"☕",pop:false}]},
+  {id:"m2",cat:"momo",name:"Myagdi Momo House",np:"मयागडी मम घर",tag:"Momos & Snacks",tagNp:"मम र स्न्याक्स",rating:4.7,reviews:186,time:"15-25",emoji:"🥟",color:"#8B5CF6",badge:"Fast",badgeNp:"छिटो",type:"Snack Shop",typeNp:"स्न्याक पसल",city:"beni",
+    items:[{id:"i5",name:"Steamed Momo (10)",np:"भाफको मम",price:120,desc:"Classic",emoji:"🥟",pop:true},{id:"i6",name:"Fried Momo (10)",np:"तारेको मम",price:140,desc:"Crispy",emoji:"🥟",pop:true},{id:"i7",name:"Chowmein",np:"चाउमिन",price:110,desc:"Noodles",emoji:"🍝",pop:false}]},
+  {id:"m3",cat:"grocery",name:"BeniFoods Store",np:"बेनीफुड्स स्टोर",tag:"Grocery & Fresh",tagNp:"किराना र ताजा",rating:4.9,reviews:428,time:"25-40",emoji:"🌾",color:"#1A6B3A",badge:"Fresh",badgeNp:"ताजा",type:"Grocery",typeNp:"किराना",city:"beni",
+    items:[{id:"i8",name:"Fresh Vegetables 1kg",np:"ताजा तरकारी",price:80,desc:"Farm fresh",emoji:"🥦",pop:true},{id:"i9",name:"Rice 5kg",np:"चामल",price:600,desc:"Premium",emoji:"🍚",pop:true},{id:"i10",name:"Fresh Eggs (12)",np:"ताजा अण्डा",price:200,desc:"Farm fresh",emoji:"🥚",pop:false}]},
+  {id:"m4",cat:"medicine",name:"Beni Pharmacy",np:"बेनी फार्मेसी",tag:"Medicines & Health",tagNp:"औषधि र स्वास्थ्य",rating:4.6,reviews:94,time:"20-35",emoji:"💊",color:"#0EA5E9",badge:"Essential",badgeNp:"आवश्यक",type:"Pharmacy",typeNp:"फार्मेसी",city:"beni",
+    items:[{id:"i11",name:"Paracetamol (10)",np:"प्यारासिटामोल",price:30,desc:"Pain relief",emoji:"💊",pop:true},{id:"i12",name:"ORS Sachet",np:"ORS",price:25,desc:"Rehydration",emoji:"💧",pop:false},{id:"i13",name:"Vitamin C (30)",np:"भिटामिन C",price:120,desc:"Immunity",emoji:"🟡",pop:false}]},
+  {id:"m5",cat:"drinks",name:"Beni Tea House",np:"बेनी चियाघर",tag:"Tea & Beverages",tagNp:"चिया र पेय",rating:4.5,reviews:143,time:"10-20",emoji:"☕",color:"#C8960C",badge:"Quick",badgeNp:"छिटो",type:"Cafe",typeNp:"क्याफे",city:"beni",
+    items:[{id:"i14",name:"Masala Tea",np:"मसला चिया",price:40,desc:"Spiced",emoji:"☕",pop:true},{id:"i15",name:"Lassi",np:"लस्सी",price:80,desc:"Yogurt",emoji:"🥛",pop:true},{id:"i16",name:"Fresh Juice",np:"ताजा जुस",price:70,desc:"Seasonal",emoji:"🧃",pop:false}]},
+  {id:"m6",cat:"bakery",name:"Beni Bakery",np:"बेनी बेकरी",tag:"Bakery & Sweets",tagNp:"बेकरी र मिठाई",rating:4.4,reviews:67,time:"15-25",emoji:"🍞",color:"#F59E0B",badge:"New",badgeNp:"नयाँ",type:"Bakery",typeNp:"बेकरी",city:"beni",
+    items:[{id:"i17",name:"Sel Roti (4 pcs)",np:"सेल रोटी",price:80,desc:"Traditional",emoji:"🍩",pop:true},{id:"i18",name:"Samosa (2 pcs)",np:"समोसा",price:40,desc:"Crispy",emoji:"🥟",pop:true},{id:"i19",name:"Bread Loaf",np:"ब्रेड",price:60,desc:"Fresh baked",emoji:"🍞",pop:false}]},
+  {id:"m7",cat:"vegetables",name:"Fresh Vegetables Beni",np:"ताजा तरकारी बेनी",tag:"Fresh Vegetables",tagNp:"ताजा तरकारी",rating:4.3,reviews:45,time:"15-30",emoji:"🥦",color:"#22C55E",badge:"Local",badgeNp:"स्थानीय",type:"Vendor",typeNp:"विक्रेता",city:"beni",
+    items:[{id:"i20",name:"Tomato 1kg",np:"गोलभेडा १ केजी",price:60,desc:"Fresh local",emoji:"🍅",pop:true},{id:"i21",name:"Potato 1kg",np:"आलु १ केजी",price:40,desc:"Fresh",emoji:"🥔",pop:true},{id:"i22",name:"Onion 1kg",np:"प्याज १ केजी",price:50,desc:"Fresh",emoji:"🧅",pop:false}]},
+  {id:"m8",cat:"meat",name:"Beni Meat Shop",np:"बेनी मासु पसल",tag:"Fresh Meat & Dairy",tagNp:"ताजा मासु र डेयरी",rating:4.5,reviews:78,time:"20-35",emoji:"🥩",color:"#DC2626",badge:"Fresh",badgeNp:"ताजा",type:"Meat Shop",typeNp:"मासु पसल",city:"beni",
+    items:[{id:"i23",name:"Chicken 500g",np:"कुखुरा ५०० ग्राम",price:280,desc:"Fresh local",emoji:"🍗",pop:true},{id:"i24",name:"Fresh Milk 1L",np:"ताजा दूध १ लिटर",price:90,desc:"Farm fresh",emoji:"🥛",pop:true}]},
+];
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let lang="en", mode=null;
+let cart=[], curM=null, curCat="all", curCity="beni";
+let dOn=false, dEarn=0, dOrders=0, dStep=0, dActive=null, dTimer=null, dLeft=25;
+let rOn=false, rOrders=[
+  {id:"BD-2841",customer:"Ram Bahadur",phone:"984-XXXXXXX",items:[{n:"Dal Bhat Tarkari",np:"दाल भात तरकारी",q:2,p:180}],total:360,status:"new",time:"2 min ago",mtype:"🍛"},
+  {id:"BD-2840",customer:"Sita Devi",phone:"985-XXXXXXX",items:[{n:"Sel Roti (4 pcs)",np:"सेल रोटी",q:2,p:80}],total:160,status:"preparing",time:"10 min ago",mtype:"🍞"},
+];
+let rSales=1240, rOCount=4;
+let custMap=null, rPos={lat:28.3449+0.003,lng:83.5332+0.003}, rMark=null;
+let dMap=null, dMark=null, dRPos={lat:28.3449+0.002,lng:83.5332+0.002};
+
+const t=(e,n)=>lang==="np"?n:e;
+const BENI={lat:28.3449,lng:83.5332};
+
+// ─── LANG ─────────────────────────────────────────────────────────────────────
+function setLang(l){
+  lang=l;
+  document.getElementById("body").classList.toggle("np",l==="np");
+  document.querySelectorAll("[data-en]").forEach(el=>{if(el.tagName!=="INPUT"&&el.tagName!=="SELECT")el.textContent=l==="np"?el.dataset.np:el.dataset.en;});
+  document.querySelectorAll(".ms-lb").forEach((b,i)=>b.classList.toggle("on",(i===0&&l==="en")||(i===1&&l==="np")));
+  ["c-lb","d-lb","r-lb"].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=l==="en"?"NP":"EN";});
+  if(mode==="c")renderM();
+  if(mode==="m")renderMDash();
+}
+
+// ─── CITY ─────────────────────────────────────────────────────────────────────
+function setCity(city){
+  curCity=city;
+  const cd=CITY_COORDS[city]||CITY_COORDS.beni;
+  const disp=document.getElementById("city-display");
+  if(disp)disp.textContent=lang==="np"?cd.np:cd.name;
+}
+
+// ─── LAUNCH ───────────────────────────────────────────────────────────────────
+function launch(m){
+  mode=m;
+  document.getElementById("mode-select").style.display="none";
+  document.getElementById("bkbtn").style.display="flex";
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  const ids={c:"ac",d:"ad",m:"am",j:"join"};
+  document.getElementById(ids[m]).classList.add("active");
+  setCity(document.getElementById("city-select").value||"beni");
+  if(m==="c")renderM();
+  if(m==="d"){initDMap();renderDSheet();}
+  if(m==="m")renderMDash();
+}
+
+function goBack(){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById("mode-select").style.display="flex";
+  document.getElementById("bkbtn").style.display="none";
+  mode=null;
+}
+
+function showToast(msg){
+  let el=document.querySelector(".toast");
+  if(!el){el=document.createElement("div");el.className="toast";document.body.appendChild(el);}
+  el.textContent=msg;el.style.opacity="1";
+  setTimeout(()=>el.style.opacity="0",2500);
+}
+
+// ══════════════════════════════════════
+// CUSTOMER
+// ══════════════════════════════════════
+function setCat(cat,btn){
+  curCat=cat;
+  document.querySelectorAll(".cat").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");renderM();
+}
+function filterM(){renderM();}
+function renderM(){
+  const q=document.getElementById("si")?.value.toLowerCase()||"";
+  const city=document.getElementById("city-select")?.value||"beni";
+  const isActivCity=city==="beni";
+  const filtered=MERCHANTS.filter(m=>{
+    const mc=curCat==="all"||m.cat===curCat;
+    const mq=!q||m.name.toLowerCase().includes(q)||m.np.includes(q)||m.type.toLowerCase().includes(q);
+    return mc&&mq;
+  });
+  document.getElementById("ml").innerHTML=filtered.length===0
+    ?`<div style="text-align:center;padding:30px;color:var(--mu);">
+        <div style="font-size:36px;margin-bottom:8px;">${isActivCity?"🔍":"🏙️"}</div>
+        <div style="font-size:14px;font-weight:700;">${isActivCity?t("Nothing found","केही भेटिएन"):t("Coming Soon to this city!","यो शहरमा चाँडै आउँदैछ!")}</div>
+        ${!isActivCity?`<div style="font-size:12px;color:var(--mu);margin-top:6px;">${t("BeniDash is expanding! Apply to be a merchant.","BeniDash विस्तार हुँदैछ! मर्चेन्ट बन्न आवेदन गर्नुस्।")}</div><button onclick="launch('j')" style="margin-top:12px;padding:10px 20px;background:var(--or);border:none;border-radius:50px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">${t("Apply as Merchant","मर्चेन्ट आवेदन")}</button>`:""}
+      </div>`
+    :filtered.map(m=>`
+      <div class="mc" onclick="openM('${m.id}')">
+        <div class="mb" style="background:linear-gradient(135deg,${m.color}22,${m.color}44);">
+          <span>${m.emoji}</span>
+          <div class="mbadge" style="background:${m.color}">${t(m.badge,m.badgeNp)}</div>
+          <div class="mtype">${t(m.type,m.typeNp)}</div>
+        </div>
+        <div class="mbody">
+          <div class="mn">${t(m.name,m.np)}</div>
+          <div style="font-size:10px;color:var(--mu);margin-bottom:5px;">${t(m.tag,m.tagNp)}</div>
+          <div class="mm"><span>⭐ ${m.rating}</span><span>🕐 ${m.time} ${t("min","मिनेट")}</span><span>🛵 NPR 50</span><span>📍 ${t(CITY_COORDS[m.city]?.name||"Beni",CITY_COORDS[m.city]?.np||"बेनी")}</span></div>
+        </div>
+      </div>`).join("");
+}
+
+function openM(id){
+  curM=MERCHANTS.find(m=>m.id===id);
+  showDet();
+}
+
+function showDet(){
+  const m=curM;
+  showSc("cdet");
+  document.getElementById("cdet").innerHTML=`
+    <div class="dban" style="background:linear-gradient(135deg,${m.color}33,${m.color}55);">
+      <span>${m.emoji}</span>
+      <button class="dback" onclick="showHome()">←</button>
+    </div>
+    <div class="dinfo">
+      <div style="font-size:18px;font-weight:800;margin-bottom:2px;">${t(m.name,m.np)}</div>
+      <div style="font-size:10px;color:var(--mu);margin-bottom:4px;">${t(m.tag,m.tagNp)} · ${t(m.type,m.typeNp)}</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;font-size:10px;color:var(--mu);">
+        <span>⭐ ${m.rating} (${m.reviews})</span><span>🕐 ${m.time} ${t("min","मिनेट")}</span><span>🛵 NPR 50</span><span>📍 ${t(CITY_COORDS[m.city]?.name||"Beni",CITY_COORDS[m.city]?.np||"बेनी")}</span>
+      </div>
+    </div>
+    <div style="padding:10px 18px 6px;font-size:13px;font-weight:800;">${t("Products","उत्पादनहरू")}</div>
+    ${m.items.map(item=>{const qty=cart.find(c=>c.id===item.id)?.qty||0;return`
+      <div class="item">
+        <div class="ie">${item.emoji}</div>
+        <div class="ii">
+          ${item.pop?`<div style="font-size:9px;color:var(--or);font-weight:600;margin-bottom:1px;">🔥 ${t("Popular","लोकप्रिय")}</div>`:""}
+          <div class="in">${t(item.name,item.np)}</div>
+          <div class="id">${item.desc}</div>
+          <div class="ip">NPR ${item.price}</div>
+        </div>
+        <div id="ic${item.id}">
+          ${qty===0?`<button class="ab" onclick="addI('${m.id}','${item.id}')">+</button>`:`<div class="qw"><button class="qb" onclick="chQ('${item.id}',-1)">−</button><span class="qn">${qty}</span><button class="qb" onclick="addI('${m.id}','${item.id}')">+</button></div>`}
+        </div>
+      </div>`;}).join("")}
+    <div style="height:20px;"></div>`;
+}
+
+function addI(mId,iId){
+  const m=MERCHANTS.find(x=>x.id===mId);const item=m.items.find(x=>x.id===iId);
+  const ex=cart.find(c=>c.id===iId);
+  if(ex)ex.qty++;else cart.push({...item,qty:1,mName:m.name,mNameNp:m.np,mId});
+  updCart();if(curM)showDet();
+}
+function chQ(iId,d){
+  const idx=cart.findIndex(c=>c.id===iId);if(idx===-1)return;
+  cart[idx].qty+=d;if(cart[idx].qty<=0)cart.splice(idx,1);
+  updCart();if(curM)showDet();if(document.getElementById("ccart").style.display!=="none")renderCart();
+}
+const cTotal=()=>cart.reduce((s,i)=>s+i.price*i.qty,0);
+const cCount=()=>cart.reduce((s,i)=>s+i.qty,0);
+function updCart(){
+  const c=cCount();
+  const bar=document.getElementById("cbar");
+  c>0?(bar.classList.remove("h"),document.getElementById("cbc").textContent=`${c} ${t("items","सामान")}`,document.getElementById("cbt").textContent=`NPR ${cTotal()+50} →`):bar.classList.add("h");
+  const badge=document.getElementById("cbadge");
+  if(c>0){badge.style.display="flex";badge.textContent=c;}else badge.style.display="none";
+}
+function renderCart(){
+  const el=document.getElementById("ccart");
+  if(cart.length===0){
+    el.innerHTML=`<div style="text-align:center;padding:50px 20px;"><div style="font-size:48px;margin-bottom:12px;">🛒</div><div style="font-size:16px;font-weight:800;margin-bottom:6px;">${t("Cart is empty","कार्ट खाली छ")}</div><button onclick="showHome()" style="padding:11px 22px;background:var(--or);border:none;border-radius:50px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:12px;">${t("Browse Merchants","मर्चेन्ट हेर्नुस्")}</button></div>`;
+    return;
+  }
+  el.innerHTML=`<div class="cart-s">
+    <div style="font-size:17px;font-weight:800;margin-bottom:14px;">${t("Your Cart","तपाईंको कार्ट")} 🛒</div>
+    <div style="background:var(--wh);border-radius:15px;padding:0 14px;border:1.5px solid var(--bo);margin-bottom:12px;">
+      <div style="padding:10px 0 8px;border-bottom:1px solid var(--bo);font-size:11px;font-weight:700;color:var(--mu);">${t(cart[0]?.mName||"",cart[0]?.mNameNp||"")}</div>
+      ${cart.map(item=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bo);">
+          <div style="font-size:24px;width:44px;height:44px;background:var(--wa);border-radius:10px;display:flex;align-items:center;justify-content:center;">${item.emoji}</div>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:700;">${t(item.name,item.np)}</div><div style="font-size:11px;color:var(--mu);">NPR ${item.price} × ${item.qty}</div></div>
+          <div class="qw"><button class="qb" onclick="chQ('${item.id}',-1)">−</button><span class="qn">${item.qty}</span><button class="qb" onclick="addI('${item.mId}','${item.id}')">+</button></div>
+          <div style="font-size:13px;font-weight:800;min-width:54px;text-align:right;">NPR ${item.price*item.qty}</div>
+        </div>`).join("")}
+    </div>
+    <div style="background:var(--wh);border-radius:15px;padding:16px;border:1.5px solid var(--bo);margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:800;margin-bottom:10px;">${t("Order Summary","अर्डर सारांश")}</div>
+      <div class="sum-r"><span>${t("Subtotal","उपकुल")}</span><span>NPR ${cTotal()}</span></div>
+      <div class="sum-r"><span>${t("Delivery","डेलिभरी")}</span><span>NPR 50</span></div>
+      <div class="sum-t"><span>${t("Total","कुल")}</span><span style="color:var(--or);">NPR ${cTotal()+50}</span></div>
+    </div>
+    <div style="background:var(--wh);border-radius:15px;padding:14px;border:1.5px solid var(--bo);">
+      <div style="font-size:13px;font-weight:800;margin-bottom:8px;">${t("Payment","भुक्तान")}</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:12px;"><span style="font-size:20px;">💵</span>${t("Cash on Delivery","डेलिभरीमा नगद")}</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:12px;margin-top:6px;"><span style="font-size:20px;">📱</span>eSewa / IME Pay</div>
+    </div>
+    <button class="obtn" onclick="doOrder()">🛵 ${t(`Place Order · NPR ${cTotal()+50}`,`अर्डर · NPR ${cTotal()+50}`)}</button>
+  </div>`;
+}
+
+function doOrder(){
+  showToast(t("✅ Order placed! Tracking...","✅ अर्डर भयो! ट्र्याकिङ..."));
+  showTrack();
+}
+
+function renderTrack(){
+  document.getElementById("ctrack").innerHTML=`
+    <div style="background:var(--dk);padding:50px 18px 16px;color:#fff;">
+      <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:3px;">${t("Order Confirmed 🎉","अर्डर पुष्टि 🎉")}</div>
+      <div style="font-size:18px;font-weight:800;">${t("Rider is on the way!","राइडर आउँदैछ!")}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:3px;">${t("Est. 25-35 min","अनुमानित २५-३५ मिनेट")}</div>
+    </div>
+    <div style="padding:12px 18px;background:var(--wh);border-bottom:1px solid var(--bo);display:flex;align-items:center;gap:10px;">
+      <span style="font-size:22px;">🛵</span>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:700;">${t("Ram is your rider","राम तपाईंको राइडर")}</div><div style="font-size:10px;color:var(--mu);">Honda CB · BA 17 1234</div></div>
+      <div style="text-align:right;"><div style="font-size:20px;font-weight:900;color:var(--or);" id="eta">28</div><div style="font-size:10px;color:var(--mu);">${t("min","मिनेट")}</div></div>
+    </div>
+    <div style="padding:12px 18px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px;">${t("Live Tracking","लाइभ ट्र्याकिङ")}</div>
+      <div id="cm" style="border-radius:16px;height:220px;overflow:hidden;margin-bottom:12px;"></div>
+      <div style="background:var(--wh);border-radius:14px;padding:14px;border:1.5px solid var(--bo);">
+        ${[t("✅ Order Placed","✅ अर्डर भयो"),t("👨‍🍳 Preparing...","👨‍🍳 तयार हुँदैछ..."),t("🛵 Rider coming","🛵 राइडर आउँदैछ"),t("🏠 Delivered!","🏠 डेलिभर भयो!")].map((s,i)=>`
+          <div style="display:flex;align-items:center;gap:10px;padding:6px 0;${i<3?"border-bottom:1px solid var(--bo);":""}">
+            <div style="width:9px;height:9px;border-radius:50%;background:${i<2?"var(--gr)":"var(--bo)"};flex-shrink:0;"></div>
+            <span style="font-size:12px;font-weight:${i<2?"700":"400"};color:${i<2?"var(--dk)":"var(--mu)"};">${s}</span>
+          </div>`).join("")}
+      </div>
+    </div>`;
+  setTimeout(initCustMap,200);
+  let e=28;setInterval(()=>{if(e>1){e--;const el=document.getElementById("eta");if(el)el.textContent=e;}},3000);
+}
+
+function initCustMap(){
+  if(custMap){custMap.invalidateSize();return;}
+  const city=CITY_COORDS[curCity]||BENI;
+  custMap=L.map("cm",{center:[city.lat,city.lng],zoom:15,zoomControl:false,attributionControl:false});
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19}).addTo(custMap);
+  L.marker([city.lat,city.lng],{icon:L.divIcon({html:`<div style="background:#1A1A2E;border:3px solid #fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,0.3);">🏠</div>`,className:"",iconSize:[26,26],iconAnchor:[13,13]})}).addTo(custMap);
+  rPos={lat:city.lat+0.003,lng:city.lng+0.003};
+  rMark=L.marker([rPos.lat,rPos.lng],{icon:L.divIcon({html:`<div style="background:#0A0A0A;border:3px solid #22C55E;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 10px rgba(34,197,94,0.4);">🛵</div>`,className:"",iconSize:[28,28],iconAnchor:[14,14]})}).addTo(custMap);
+  L.polyline([[rPos.lat,rPos.lng],[city.lat,city.lng]],{color:"#E8622A",weight:3,dashArray:"6 4",opacity:0.7}).addTo(custMap);
+  custMap.fitBounds([[Math.min(rPos.lat,city.lat)-0.001,Math.min(rPos.lng,city.lng)-0.001],[Math.max(rPos.lat,city.lat)+0.001,Math.max(rPos.lng,city.lng)+0.001]]);
+  setInterval(()=>{rPos.lat+=(city.lat-rPos.lat)*0.05;rPos.lng+=(city.lng-rPos.lng)*0.05;if(rMark)rMark.setLatLng([rPos.lat,rPos.lng]);},1200);
+}
+
+function showSc(id){["chome","cdet","ccart","ctrack"].forEach(s=>document.getElementById(s).style.display=s===id?"block":"none");}
+function showHome(){showSc("chome");setNv("n-home");}
+function showCart(){showSc("ccart");renderCart();setNv("n-cart");}
+function showTrack(){showSc("ctrack");renderTrack();setNv("n-track");}
+function setNv(id){document.querySelectorAll(".bni").forEach(n=>n.classList.remove("on"));document.getElementById(id)?.classList.add("on");}
+
+// ══════════════════════════════════════
+// DRIVER
+// ══════════════════════════════════════
+function initDMap(){
+  if(dMap){dMap.invalidateSize();return;}
+  const city=CITY_COORDS[curCity]||BENI;
+  dMap=L.map("dm",{center:[city.lat,city.lng],zoom:15,zoomControl:false,attributionControl:false});
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19}).addTo(dMap);
+  L.circle([city.lat,city.lng],{radius:800,color:"#4CD964",fillColor:"#4CD964",fillOpacity:0.05,weight:1.5,dashArray:"4 3",opacity:0.35}).addTo(dMap);
+  MERCHANTS.filter(m=>m.city===curCity).slice(0,3).forEach(m=>{
+    L.marker([BENI.lat+(Math.random()-0.5)*0.01,BENI.lng+(Math.random()-0.5)*0.01],{icon:L.divIcon({html:`<div style="background:${m.color};border:2px solid #fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;box-shadow:0 2px 5px rgba(0,0,0,0.3);">${m.emoji}</div>`,className:"",iconSize:[22,22],iconAnchor:[11,11]})}).addTo(dMap);
+  });
+  dRPos={lat:city.lat+0.002,lng:city.lng+0.002};
+  dMark=L.marker([dRPos.lat,dRPos.lng],{icon:L.divIcon({html:`<div style="background:#050D08;border:3px solid #4CD964;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 0 12px rgba(76,217,100,0.4);">🛵</div>`,className:"",iconSize:[34,34],iconAnchor:[17,17]})}).addTo(dMap);
+}
+
+function toggleD(){
+  dOn=!dOn;
+  const tr=document.getElementById("dtr2"),th=document.getElementById("dth");
+  const dot=document.getElementById("ddot"),st=document.getElementById("dst");
+  if(dOn){tr.style.background="#4CD964";th.style.transform="translateX(28px)";dot.style.background="#4CD964";dot.style.boxShadow="0 0 8px rgba(76,217,100,0.6)";st.textContent=lang==="np"?"🟢 अनलाइन — अर्डरको प्रतीक्षा...":"🟢 Online — Waiting for orders...";renderDSheet();setTimeout(()=>showDModal(),3500);}
+  else{tr.style.background="rgba(255,255,255,0.08)";th.style.transform="translateX(0)";dot.style.background="var(--mu)";dot.style.boxShadow="none";st.textContent=lang==="np"?"अनलाइन जान ट्याप गर्नुस्":"Tap toggle to go online";renderDSheet();}
+}
+
+function renderDSheet(){
+  const el=document.getElementById("dsc");
+  if(!dOn){el.innerHTML=`<div style="text-align:center;padding:8px 0;">
+    <div style="font-size:32px;margin-bottom:8px;">🛵</div>
+    <div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:5px;">${t("Ready to Earn?","कमाउन तयार?")}</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:16px;line-height:1.6;">${t("Work any 3 hours — Deliver anything in Nepal!","जब मन लाग्छ ३ घण्टा — नेपालमा जे पनि डेलिभर गर्नुस्!")}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:14px;">
+      ${[{v:"NPR 50",l:t("Per delivery","प्रति डेलिभरी"),c:"#4CD964"},{v:"3 hrs",l:t("Work freely","स्वतन्त्र"),c:"#FFD60A"},{v:"🇳🇵",l:t("All Nepal","नेपालभर"),c:"#FF6B35"}].map(s=>`<div style="background:rgba(255,255,255,0.05);border-radius:11px;padding:10px 5px;text-align:center;border:1px solid rgba(255,255,255,0.05);"><div style="font-size:14px;font-weight:900;color:${s.c};">${s.v}</div><div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;">${s.l}</div></div>`).join("")}
+    </div>
+    <button onclick="toggleD()" style="width:100%;padding:13px;background:#4CD964;border:none;border-radius:13px;color:#000;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;">🟢 ${t("Go Online Now","अहिले अनलाइन")}</button>
+  </div>`;}
+  else if(dActive){renderActiveD();}
+  else{el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;"><div style="width:8px;height:8px;background:#4CD964;border-radius:50%;box-shadow:0 0 8px rgba(76,217,100,0.5);animation:pulse 2s infinite;"></div><span style="font-size:13px;font-weight:700;color:#fff;">${t("Online — Waiting for orders...","अनलाइन — अर्डरको प्रतीक्षामा...")}</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;">
+      ${[{v:`NPR ${dEarn}`,l:t("Today","आज"),c:"#4CD964"},{v:dOrders,l:t("Orders","अर्डर"),c:"#FFD60A"},{v:"4.9⭐",l:t("Rating","रेटिङ"),c:"#FF6B35"}].map(s=>`<div style="background:rgba(255,255,255,0.04);border-radius:11px;padding:11px 5px;text-align:center;border:1px solid rgba(255,255,255,0.04);"><div style="font-size:15px;font-weight:900;color:${s.c};">${s.v}</div><div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;">${s.l}</div></div>`).join("")}
+    </div>`;}
+}
+
+const DS_EN=["Head to Merchant","At Merchant — Wait","Picked Up","Delivered! ✅"];
+const DS_NP=["मर्चेन्टतिर जानुस्","मर्चेन्टमा — पर्खनुस्","उठाइयो","डेलिभर भयो! ✅"];
+const DB_EN=["I'm at Merchant 🏪","Order Picked Up 📦","Order Delivered ✅"];
+const DB_NP=["म मर्चेन्टमा छु 🏪","अर्डर उठाएँ 📦","डेलिभर भयो ✅"];
+
+function renderActiveD(){
+  const steps=lang==="np"?DS_NP:DS_EN;
+  const btns=lang==="np"?DB_NP:DB_EN;
+  document.getElementById("dsc").innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <div><div style="font-size:11px;color:rgba(255,255,255,0.35);">#BD-2841</div><div style="font-size:15px;font-weight:800;color:#fff;">${steps[dStep-1]||""}</div></div>
+      <div style="text-align:right;"><div style="font-size:20px;font-weight:900;color:#4CD964;">NPR 70</div></div>
+    </div>
+    ${steps.map((s,i)=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:6px 0;">
+        <div style="width:10px;height:10px;border-radius:50%;flex-shrink:0;background:${dStep>i+1?"#4CD964":dStep===i+1?"#FF6B35":"rgba(255,255,255,0.1)"};${dStep===i+1?"box-shadow:0 0 8px rgba(255,107,53,0.6)":""}transition:all 0.4s;"></div>
+        <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:${dStep>i?"#4CD964":dStep===i+1?"#fff":"rgba(255,255,255,0.35)"};">${s}</div></div>
+        ${dStep>i+1?'<span style="color:#4CD964;font-size:14px;">✓</span>':""}
+      </div>
+      ${i<3?`<div style="width:2px;height:13px;background:${dStep>i+1?"#4CD964":"rgba(255,255,255,0.06)"};margin-left:4px;transition:background 0.4s;"></div>`:""}
+    `).join("")}
+    ${dStep<4?`<button onclick="advD()" style="width:100%;padding:13px;background:${dStep===3?"#4CD964":"#FF6B35"};border:none;border-radius:13px;color:#000;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;margin-top:10px;">${btns[dStep-1]}</button>`:""}
+  `;
+}
+
+function showDModal(){
+  if(!dOn)return;
+  document.getElementById("dom").style.display="flex";
+  const m=MERCHANTS[0];
+  document.getElementById("dom-m").textContent=`${m.emoji} ${t(m.name,m.np)}`;
+  document.getElementById("dom-earn").textContent="NPR 70";
+  document.getElementById("dom-info").innerHTML=`
+    ${[{i:"🏪",l:t("Pick up","लिने ठाउँ"),v:t(m.name,m.np)},{i:"🏠",l:t("Deliver to","पुर्‍याउने"),v:t("Beni Ward 3","बेनी वडा ३")},{i:"💰",l:t("Order total","अर्डर"),v:"NPR 360"},{i:"📦",l:t("Items","सामान"),v:"Dal Bhat × 2"},{i:"📏",l:t("Distance","दूरी"),v:"1.2 km"}].map(r=>`<div style="display:flex;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:11px;"><span>${r.i}</span><span style="color:rgba(255,255,255,0.35);min-width:65px;">${r.l}</span><span style="color:rgba(255,255,255,0.7);font-weight:600;">${r.v}</span></div>`).join("")}`;
+  dLeft=25;
+  const ci=document.getElementById("dtc"),tn=document.getElementById("dtn");
+  if(dTimer)clearInterval(dTimer);
+  dTimer=setInterval(()=>{dLeft--;if(tn)tn.textContent=dLeft;if(ci){ci.style.strokeDashoffset=119.4*(1-dLeft/25);ci.style.stroke=dLeft>8?"#4CD964":"#FF453A";}if(dLeft<=0){clearInterval(dTimer);dDecline();}},1000);
+}
+
+function dAccept(){
+  clearInterval(dTimer);document.getElementById("dom").style.display="none";
+  dActive={id:"BD-2841"};dStep=1;renderDSheet();
+  showToast(t("✅ Order accepted!","✅ अर्डर स्वीकार!"));
+}
+function dDecline(){clearInterval(dTimer);document.getElementById("dom").style.display="none";}
+function advD(){
+  if(dStep<4){dStep++;
+    if(dStep===4){setTimeout(()=>{dEarn+=70;dOrders++;document.getElementById("de").textContent=`NPR ${dEarn}`;document.getElementById("doc").textContent=dOrders;dActive=null;dStep=0;renderDSheet();showToast(t("🎉 Delivered! NPR 70!","🎉 डेलिभर! NPR ७०!"));if(dOn)setTimeout(()=>showDModal(),3000);},400);}
+    else renderActiveD();
+  }
+}
+
+// ══════════════════════════════════════
+// MERCHANT
+// ══════════════════════════════════════
+function toggleR(){
+  rOn=!rOn;
+  const tg=document.getElementById("rtgl"),th=document.getElementById("rtglth");
+  const dot=document.getElementById("rdot"),st=document.getElementById("rstatus");
+  if(rOn){tg.style.background="var(--gr)";th.style.transform="translateX(24px)";dot.style.background="var(--gr)";st.textContent=lang==="np"?"🟢 खुला — अर्डर स्वीकार":"🟢 Open — Accepting Orders";renderMDash();setTimeout(()=>showMNotif(),4000);}
+  else{tg.style.background="var(--bo)";th.style.transform="translateX(0)";dot.style.background="var(--re)";st.textContent=lang==="np"?"🔴 बन्द":"🔴 Closed";renderMDash();}
+}
+
+function renderMDash(){
+  const nc=rOrders.filter(o=>o.status==="new").length;
+  document.getElementById("rc").innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+      ${[{icon:"💰",num:`NPR ${rSales.toLocaleString()}`,label:t("Today Sales","आजको बिक्री"),color:"var(--or)"},{icon:"📦",num:rOCount,label:t("Orders","अर्डर"),color:"#8B5CF6"},{icon:"⭐",num:"4.8",label:t("Rating","रेटिङ"),color:"var(--ye)"},{icon:"🛵",num:nc>0?nc:"✓",label:t("New Orders","नयाँ अर्डर"),color:nc>0?"var(--or)":"var(--gr)"}].map(s=>`<div class="mstat"><div style="font-size:20px;margin-bottom:5px;">${s.icon}</div><div class="mstat-n" style="color:${s.color};">${s.num}</div><div class="mstat-l">${s.label}</div></div>`).join("")}
+    </div>
+    ${nc>0?`<div style="background:rgba(232,98,42,0.07);border:1.5px solid rgba(232,98,42,0.2);border-radius:12px;padding:10px 13px;margin-bottom:12px;font-size:12px;font-weight:700;color:var(--or);">🔔 ${nc} ${t("new order(s) need confirmation!","नयाँ अर्डर पुष्टि बाँकी!")}</div>`
+    :rOn?`<div style="background:rgba(34,197,94,0.07);border:1.5px solid rgba(34,197,94,0.2);border-radius:12px;padding:10px 13px;margin-bottom:12px;font-size:12px;color:var(--gr);">✅ ${t("Open — Ready for orders!","खुला — अर्डरका लागि तयार!")}</div>`
+    :`<div style="background:rgba(239,68,68,0.06);border:1.5px solid rgba(239,68,68,0.15);border-radius:12px;padding:10px 13px;margin-bottom:12px;font-size:12px;color:var(--re);">⚠️ ${t("Closed — Tap toggle to open","बन्द — खुला गर्न ट्याप")}</div>`}
+    <div style="font-size:13px;font-weight:800;margin-bottom:10px;">${t("Live Orders","लाइभ अर्डर")}</div>
+    ${rOrders.length===0?`<div style="text-align:center;padding:24px;color:var(--mu);"><div style="font-size:30px;margin-bottom:6px;">📋</div><div style="font-size:12px;">${t("No orders yet","अहिलेसम्म कुनै अर्डर छैन")}</div></div>`
+    :rOrders.map(o=>{
+      const sc={new:{l:t("New","नयाँ"),c:"spn"},preparing:{l:t("Preparing","तयार हुँदैछ"),c:"spp"},ready:{l:t("Ready","तयार"),c:"spr"}}[o.status]||{l:o.status,c:""};
+      return`<div class="mo">
+        <div class="moh"><div><div style="font-size:12px;font-weight:700;">#${o.id} ${o.mtype||""}</div><div style="font-size:10px;color:var(--mu);">${o.time}</div></div><span class="msp ${sc.c}">${sc.l}</span></div>
+        <div class="mob">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;"><span style="font-size:16px;">👤</span><div><div style="font-size:12px;font-weight:700;">${o.customer}</div><div style="font-size:10px;color:var(--mu);">📞 ${o.phone}</div></div></div>
+          <div style="font-size:11px;color:var(--mu);margin-bottom:5px;">${o.items.map(i=>`${i.q}× ${t(i.n,i.np)}`).join(", ")}</div>
+          <div style="display:flex;justify-content:space-between;"><span style="font-size:13px;font-weight:800;">NPR ${o.total}</span><span style="font-size:10px;padding:2px 7px;background:var(--wa);border-radius:50px;color:var(--or);font-weight:600;">${t("Cash","नगद")}</span></div>
+        </div>
+        <div style="display:flex;gap:7px;padding:8px 13px;border-top:1px solid var(--bo);">
+          ${o.status==="new"?`<button class="mab" onclick="upM('${o.id}','preparing')">✅ ${t("Accept","स्वीकार")}</button><button class="mrej" onclick="upM('${o.id}','reject')">✕</button>`:""}
+          ${o.status==="preparing"?`<button class="mrb" onclick="upM('${o.id}','ready')">🍽️ ${t("Mark Ready","तयार भयो")}</button>`:""}
+          ${o.status==="ready"?`<button class="mab" onclick="upM('${o.id}','done')">✅ ${t("Delivered","डेलिभर")}</button>`:""}
+        </div>
+      </div>`;}).join("")}`;
+}
+
+function upM(id,status){
+  if(status==="reject"||status==="done"){
+    if(status==="done"){const o=rOrders.find(x=>x.id===id);if(o){rSales+=o.total;rOCount++;}}
+    rOrders=rOrders.filter(o=>o.id!==id);
+  }else{const o=rOrders.find(x=>x.id===id);if(o){o.status=status;if(status==="preparing"){rSales+=o.total;rOCount++;}}}
+  renderMDash();
+  showToast(status==="preparing"?t("✅ Order accepted!","✅ अर्डर स्वीकार!"):status==="ready"?t("🍽️ Ready!","🍽️ तयार!"):t("✅ Done!","✅ सम्पन्न!"));
+}
+
+function showMNotif(){
+  if(!rOn)return;
+  document.getElementById("rnotif").style.display="block";
+  document.getElementById("rnotif").innerHTML=`<div class="mnotif">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div><div style="font-size:10px;color:var(--or);font-weight:700;">🆕 ${t("NEW ORDER!","नयाँ अर्डर!")}</div><div style="font-size:16px;font-weight:900;margin-top:2px;">#BD-2845</div></div>
+      <div style="text-align:right;"><div style="font-size:20px;font-weight:900;color:var(--or);">NPR 540</div></div>
+    </div>
+    <div style="background:var(--cr);border-radius:10px;padding:10px;margin-bottom:10px;font-size:11px;">
+      <div style="margin-bottom:2px;">👤 <strong>Bikash Thapa</strong> · 📍 ${t("Beni Ward 2","बेनी वडा २")}</div>
+      <div style="color:var(--mu);">3× ${t("Dal Bhat","दाल भात")} · 3× ${t("Tea","चिया")}</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="accMNotif()" style="flex:1;padding:11px;background:var(--gr);border:none;border-radius:11px;color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">✅ ${t("Accept","स्वीकार")}</button>
+      <button onclick="decMNotif()" style="padding:11px 13px;background:var(--cr);border:1.5px solid var(--bo);border-radius:11px;color:var(--mu);font-size:11px;cursor:pointer;font-family:inherit;">${t("Decline","अस्वीकार")}</button>
+    </div>
+  </div>`;
+}
+function accMNotif(){
+  rOrders.unshift({id:"BD-2845",customer:"Bikash Thapa",phone:"980-XXXXXXX",items:[{n:"Dal Bhat",np:"दाल भात",q:3,p:180},{n:"Tea",np:"चिया",q:3,p:40}],total:540,status:"new",time:"just now",mtype:"🍛"});
+  document.getElementById("rnotif").style.display="none";renderMDash();showToast(t("✅ Order accepted!","✅ अर्डर स्वीकार!"));
+}
+function decMNotif(){document.getElementById("rnotif").style.display="none";}
+
+// ══════════════════════════════════════
+// JOIN MERCHANT
+// ══════════════════════════════════════
+function submitMerchant(){
+  const bname=document.getElementById("f-bname")?.value;
+  const btype=document.getElementById("f-btype")?.value;
+  const phone=document.getElementById("f-phone")?.value;
+  if(!bname||!btype||!phone){
+    showToast(t("Please fill required fields!","आवश्यक फिल्डहरू भर्नुस्!"));
+    return;
+  }
+  showToast(t(`✅ Application sent! We'll contact ${phone} within 24 hrs!`,`✅ आवेदन पठाइयो! हामी २४ घण्टामा ${phone} मा सम्पर्क गर्नेछौं!`));
+  // In real app: save to Firebase
+  setTimeout(()=>{
+    document.getElementById("f-bname").value="";
+    document.getElementById("f-btype").value="";
+    document.getElementById("f-phone").value="";
+    document.getElementById("f-addr").value="";
+    document.getElementById("f-oname").value="";
+    document.getElementById("f-sell").value="";
+  },2000);
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+renderM();renderMDash();
+</script>
+</body>
+</html>
