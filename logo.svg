@@ -1,0 +1,75 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8622A"/>
+      <stop offset="100%" style="stop-color:#FF8C5A"/>
+    </linearGradient>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C8400A"/>
+      <stop offset="100%" style="stop-color:#E8622A"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="rgba(232,98,42,0.4)"/>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="200" cy="200" r="190" fill="url(#bg)" filter="url(#shadow)"/>
+  <circle cx="200" cy="200" r="190" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="3"/>
+
+  <!-- Inner ring -->
+  <circle cx="200" cy="200" r="168" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+
+  <!-- Mountain shape (Myagdi hills) -->
+  <path d="M60 280 L130 170 L175 220 L200 155 L225 220 L270 170 L340 280 Z" 
+        fill="rgba(255,255,255,0.08)" stroke="none"/>
+
+  <!-- Scooter / delivery bike -->
+  <!-- Body -->
+  <ellipse cx="200" cy="218" rx="52" ry="22" fill="rgba(0,0,0,0.25)"/>
+  <path d="M155 215 Q165 190 185 188 L215 188 Q235 190 245 215 Z" 
+        fill="#fff" opacity="0.95"/>
+  <!-- Seat -->
+  <path d="M178 188 Q200 178 222 188" 
+        stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.9"/>
+  <!-- Handlebars -->
+  <path d="M240 192 L252 180 M252 180 L258 185" 
+        stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.9"/>
+  <!-- Front wheel -->
+  <circle cx="248" cy="220" r="18" fill="none" stroke="#fff" stroke-width="5" opacity="0.9"/>
+  <circle cx="248" cy="220" r="6" fill="#fff" opacity="0.8"/>
+  <!-- Back wheel -->  
+  <circle cx="152" cy="220" r="18" fill="none" stroke="#fff" stroke-width="5" opacity="0.9"/>
+  <circle cx="152" cy="220" r="6" fill="#fff" opacity="0.8"/>
+  <!-- Delivery box -->
+  <rect x="157" y="196" width="36" height="26" rx="5" 
+        fill="rgba(0,0,0,0.3)" stroke="#fff" stroke-width="2.5" opacity="0.9"/>
+  <path d="M157 206 L193 206" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+  <!-- Rider head -->
+  <circle cx="228" cy="182" r="13" fill="#fff" opacity="0.9"/>
+  <!-- Speed lines -->
+  <path d="M120 215 L138 215 M115 222 L133 222 M120 229 L138 229" 
+        stroke="rgba(255,255,255,0.5)" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- BeniDash text -->
+  <text x="200" y="278" 
+        font-family="Arial Black, Helvetica, sans-serif" 
+        font-size="38" font-weight="900" 
+        text-anchor="middle" fill="#fff" 
+        letter-spacing="1">BeniDash</text>
+
+  <!-- Nepali tagline -->
+  <text x="200" y="302" 
+        font-family="Arial, Helvetica, sans-serif" 
+        font-size="13" font-weight="400" 
+        text-anchor="middle" fill="rgba(255,255,255,0.7)"
+        letter-spacing="2">नेपालको डेलिभरी एप</text>
+
+  <!-- Nepal flag color dots -->
+  <circle cx="167" cy="316" r="4" fill="#EF4444"/>
+  <circle cx="200" cy="316" r="4" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="233" cy="316" r="4" fill="#1E40AF"/>
+
+  <!-- Small NP flag -->
+  <text x="200" y="340" font-size="16" text-anchor="middle">🇳🇵</text>
+</svg>

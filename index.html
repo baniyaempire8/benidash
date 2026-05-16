@@ -29,11 +29,11 @@ body.np{font-family:'Noto Sans Devanagari','DM Sans',sans-serif;}
 ::-webkit-scrollbar{display:none;}
 
 /* ── MODE SELECT ── */
-#mode-select{position:fixed;inset:0;z-index:1000;background:linear-gradient(160deg,#0A0604,#150A04);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 24px;overflow-y:auto;}
-.ms-logo{font-size:48px;margin-bottom:6px;}
-.ms-brand{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;margin-bottom:2px;}
-.ms-nepal{font-size:13px;color:var(--or);font-weight:700;margin-bottom:4px;}
-.ms-tag{font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:24px;text-align:center;line-height:1.6;}
+#mode-select{position:fixed;inset:0;z-index:1000;background:linear-gradient(160deg,#0A0604,#150A04);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:40px 22px 30px;overflow-y:auto;}
+.ms-logo{font-size:44px;margin-bottom:4px;}
+.ms-brand{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;margin-bottom:2px;}
+.ms-nepal{font-size:12px;color:var(--or);font-weight:700;margin-bottom:4px;}
+.ms-tag{font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:16px;text-align:center;line-height:1.6;}
 
 /* City selector */
 .city-selector{width:100%;max-width:340px;margin-bottom:16px;}
@@ -274,9 +274,17 @@ body.np{font-family:'Noto Sans Devanagari','DM Sans',sans-serif;}
       <span style="font-size:28px;">📋</span>
       <div>
         <div class="ms-ct" data-en="Become a Merchant Partner" data-np="मर्चेन्ट साझेदार बन्नुस्">Become a Merchant Partner</div>
-        <div class="ms-cs" data-en="Apply to list your business on BeniDash Nepal" data-np="BeniDash Nepal मा आफ्नो व्यवसाय सूचीबद्ध गर्न आवेदन">Apply to list your business — FREE for 3 months!</div>
+        <div class="ms-cs" data-en="Apply to list your business — FREE for 3 months!" data-np="व्यवसाय सूचीबद्ध गर्नुस् — ३ महिना निःशुल्क!">Apply to list your business — FREE for 3 months!</div>
       </div>
       <span style="margin-left:auto;color:rgba(59,130,246,0.4);font-size:18px;">›</span>
+    </div>
+    <div class="ms-card" style="background:linear-gradient(135deg,#0D1A0F,#193020);border:1.5px solid rgba(76,217,100,0.25);" onclick="launch('r')">
+      <span style="font-size:28px;">🛵</span>
+      <div>
+        <div class="ms-ct" data-en="Become a Delivery Partner" data-np="डेलिभरी साझेदार बन्नुस्">Become a Delivery Partner</div>
+        <div class="ms-cs" data-en="Apply to ride — NPR 400-700/day — Walk or Ride!" data-np="राइड गर्न आवेदन — NPR ४००-७०० / दिन!">Apply to ride — NPR 400-700/day — Walk or Ride!</div>
+      </div>
+      <span style="margin-left:auto;color:rgba(76,217,100,0.4);font-size:18px;">›</span>
     </div>
   </div>
 
@@ -533,9 +541,7 @@ body.np{font-family:'Noto Sans Devanagari','DM Sans',sans-serif;}
         <label class="form-label" data-en="What do you sell? (के बेच्नुहुन्छ?)" data-np="के बेच्नुहुन्छ?">What do you sell? (brief)</label>
         <input class="form-input" id="f-sell" placeholder="e.g. Dal Bhat, Momo, Medicine..."/>
       </div>
-      <button class="submit-btn" onclick="submitMerchant()">
-        🚀 <span data-en="Apply to Join BeniDash Nepal" data-np="BeniDash Nepal मा सामेल हुन आवेदन">Apply to Join BeniDash Nepal</span>
-      </button>
+      <button onclick="submitMerchant()" style="width:100%;padding:16px;background:var(--or);border:none;border-radius:16px;color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;transition:all 0.2s;" data-en="🚀 Apply to Join BeniDash Nepal" data-np="🚀 BeniDash Nepal मा सामेल हुन आवेदन">🚀 Apply to Join BeniDash Nepal</button>
       <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--mu);" data-en="We will contact you within 24 hours via WhatsApp!" data-np="हामी २४ घण्टाभित्र WhatsApp मार्फत सम्पर्क गर्नेछौं!">We will contact you within 24 hours via WhatsApp! 📱</div>
     </div>
 
@@ -554,6 +560,75 @@ body.np{font-family:'Noto Sans Devanagari','DM Sans',sans-serif;}
           <div style="font-size:11px;color:var(--mu);margin-top:4px;" data-en="Per order only" data-np="प्रति अर्डर मात्र">Per order only</div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ RIDER APPLY SCREEN ══════════ -->
+<div class="screen" id="ar" style="background:#FFFBF7;">
+  <div style="background:linear-gradient(135deg,#0D1A0F,#081408);padding:60px 22px 36px;text-align:center;position:relative;overflow:hidden;">
+    <div style="font-size:60px;margin-bottom:10px;position:relative;">🛵</div>
+    <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;margin-bottom:6px;position:relative;" data-en="Become a Delivery Partner" data-np="डेलिभरी साझेदार बन्नुस्">Become a Delivery Partner</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.7;position:relative;" data-en="Work any hours · NPR 50/delivery · Walk or Motorcycle" data-np="जब मन लाग्छ काम · NPR ५०/डेलिभरी · पैदल वा मोटरसाइकल">Work any hours · NPR 50/delivery · Walk or Motorcycle!</div>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:20px 18px 100px;">
+
+    <!-- Benefits -->
+    <div style="background:#fff;border-radius:18px;padding:18px;border:1.5px solid #F0EAE0;margin-bottom:14px;">
+      <div style="font-size:14px;font-weight:800;margin-bottom:14px;">💰 <span data-en="Why Ride for BeniDash?" data-np="BeniDash का लागि किन राइड गर्ने?">Why Ride for BeniDash?</span></div>
+      <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid #F0EAE0;"><span style="font-size:20px;">⏰</span><div><div style="font-weight:700;font-size:13px;" data-en="Work ANY hours you want!" data-np="जब मन लाग्छ काम गर्नुस्!">Work ANY hours you want!</div><div style="font-size:11px;color:#8A7A6A;" data-en="3 hours morning, 2 hours evening — your choice!" data-np="बिहान ३ घण्टा, साँझ २ घण्टा — तपाईंको रोजाइ!">3 hours or full day — your schedule!</div></div></div>
+      <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid #F0EAE0;"><span style="font-size:20px;">💵</span><div><div style="font-weight:700;font-size:13px;" data-en="NPR 50 per delivery!" data-np="प्रति डेलिभरी NPR ५०!">NPR 50 per delivery!</div><div style="font-size:11px;color:#8A7A6A;" data-en="8-15 deliveries/day = NPR 400-750. Weekly payment!" data-np="८-१५ डेलिभरी/दिन = NPR ४००-७५०। साप्ताहिक भुक्तान!">8-15 deliveries = NPR 400-750/day!</div></div></div>
+      <div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid #F0EAE0;"><span style="font-size:20px;">🚶</span><div><div style="font-weight:700;font-size:13px;" data-en="No Motorcycle Needed for Beni Center!" data-np="बेनी केन्द्रमा मोटरसाइकल नचाहिने!">No Motorcycle Needed for Beni Center!</div><div style="font-size:11px;color:#8A7A6A;" data-en="Walking delivery for Beni Bazaar. Short distances only!" data-np="बेनी बजारमा पैदल डेलिभरी। छोटो दूरी मात्र!">Walking delivery available!</div></div></div>
+      <div style="display:flex;gap:10px;padding:10px 0;"><span style="font-size:20px;">🥇</span><div><div style="font-weight:700;font-size:13px;" data-en="Be First — Early Riders Earn More!" data-np="पहिले बन्नुस् — अर्ली राइडरले बढी कमाउँछ!">Be First — Priority Orders Always!</div><div style="font-size:11px;color:#8A7A6A;" data-en="First 15 riders get priority orders always!" data-np="पहिला १५ राइडरले सधैं प्राथमिकता अर्डर पाउँछन्!">First 15 riders get top priority!</div></div></div>
+    </div>
+
+    <!-- Earnings Calculator -->
+    <div style="background:#fff;border-radius:18px;padding:18px;border:1.5px solid #F0EAE0;margin-bottom:14px;">
+      <div style="font-size:14px;font-weight:800;margin-bottom:14px;">🧮 <span data-en="Earnings Calculator" data-np="कमाइ क्याल्कुलेटर">Earnings Calculator</span></div>
+      <label style="font-size:11px;font-weight:700;color:#8A7A6A;margin-bottom:6px;display:block;" data-en="Hours per day:" data-np="दैनिक घण्टा:">Hours per day:</label>
+      <input type="range" min="1" max="12" value="3" oninput="calcEarn(this.value)" style="width:100%;accent-color:#E8622A;margin-bottom:4px;"/>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:#8A7A6A;margin-bottom:12px;"><span>1 hr</span><span>12 hrs</span></div>
+      <div style="background:rgba(232,98,42,0.08);border:1.5px solid rgba(232,98,42,0.2);border-radius:14px;padding:16px;text-align:center;">
+        <div style="font-size:12px;color:#8A7A6A;margin-bottom:4px;">Working <span id="hrs-show">3</span> hours/day</div>
+        <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:900;color:#E8622A;" id="earn-show">NPR 225</div>
+        <div style="font-size:11px;color:#8A7A6A;margin-top:4px;" id="earn-month-show">NPR 5,850/month</div>
+      </div>
+    </div>
+
+    <!-- Application Form -->
+    <div style="background:#fff;border-radius:18px;padding:18px;border:1.5px solid #F0EAE0;margin-bottom:14px;">
+      <div style="font-size:14px;font-weight:800;margin-bottom:14px;">📋 <span data-en="Rider Application Form" data-np="राइडर आवेदन फारम">Rider Application Form</span></div>
+      <div style="margin-bottom:12px;"><label style="font-size:11px;font-weight:700;color:#8A7A6A;margin-bottom:5px;display:block;" data-en="Full Name *" data-np="पूरा नाम *">Full Name *</label><input style="width:100%;padding:11px 14px;border:1.5px solid #F0EAE0;border-radius:12px;font-size:13px;font-family:inherit;outline:none;background:#FFFBF7;" id="r-name" placeholder="Your full name / पूरा नाम"/></div>
+      <div style="margin-bottom:12px;"><label style="font-size:11px;font-weight:700;color:#8A7A6A;margin-bottom:5px;display:block;" data-en="Phone Number *" data-np="फोन नम्बर *">Phone Number *</label><input style="width:100%;padding:11px 14px;border:1.5px solid #F0EAE0;border-radius:12px;font-size:13px;font-family:inherit;outline:none;background:#FFFBF7;" id="r-phone" type="tel" placeholder="+977 984XXXXXXX"/></div>
+      <div style="margin-bottom:12px;"><label style="font-size:11px;font-weight:700;color:#8A7A6A;margin-bottom:5px;display:block;" data-en="City / District *" data-np="शहर / जिल्ला *">City / District *</label>
+        <select style="width:100%;padding:11px 14px;border:1.5px solid #F0EAE0;border-radius:12px;font-size:13px;font-family:inherit;outline:none;background:#FFFBF7;cursor:pointer;" id="r-city">
+          <option>Beni — बेनी (Myagdi) 🟢</option>
+          <option>Pokhara — पोखरा</option>
+          <option>Kathmandu — काठमाण्डौ</option>
+          <option>Baglung — बाग्लुङ</option>
+          <option>Other / अन्य</option>
+        </select>
+      </div>
+      <div style="margin-bottom:12px;"><label style="font-size:11px;font-weight:700;color:#8A7A6A;margin-bottom:5px;display:block;" data-en="Vehicle Type *" data-np="सवारीको प्रकार *">Vehicle Type *</label>
+        <select style="width:100%;padding:11px 14px;border:1.5px solid #F0EAE0;border-radius:12px;font-size:13px;font-family:inherit;outline:none;background:#FFFBF7;cursor:pointer;" id="r-vehicle">
+          <option value="">-- Select / छान्नुस् --</option>
+          <option>🛵 Motorcycle / मोटरसाइकल</option>
+          <option>🚲 Bicycle / साइकल</option>
+          <option>🚶 Walking / पैदल (Beni center only)</option>
+          <option>🚐 Van / भ्यान</option>
+        </select>
+      </div>
+      <div style="margin-bottom:12px;"><label style="font-size:11px;font-weight:700;color:#8A7A6A;margin-bottom:5px;display:block;" data-en="Vehicle Number (if motorcycle)" data-np="सवारी नम्बर (मोटरसाइकल भए)">Vehicle Number (optional)</label><input style="width:100%;padding:11px 14px;border:1.5px solid #F0EAE0;border-radius:12px;font-size:13px;font-family:inherit;outline:none;background:#FFFBF7;" id="r-plate" placeholder="e.g. BA 17 1234"/></div>
+      <div style="margin-bottom:12px;"><label style="font-size:11px;font-weight:700;color:#8A7A6A;margin-bottom:5px;display:block;" data-en="Available hours per day" data-np="दैनिक उपलब्ध घण्टा">Available hours per day</label>
+        <select style="width:100%;padding:11px 14px;border:1.5px solid #F0EAE0;border-radius:12px;font-size:13px;font-family:inherit;outline:none;background:#FFFBF7;cursor:pointer;" id="r-hours">
+          <option>1-3 hours (Part time)</option>
+          <option>3-6 hours (Half day)</option>
+          <option>6-8 hours (Full day)</option>
+          <option>Flexible / लचिलो</option>
+        </select>
+      </div>
+      <button onclick="submitRider()" style="width:100%;padding:15px;background:#22C55E;border:none;border-radius:15px;color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;transition:all 0.2s;" data-en="🛵 Apply to Become a Rider" data-np="🛵 राइडर बन्न आवेदन गर्नुस्">🛵 Apply to Become a Rider</button>
+      <div style="text-align:center;font-size:11px;color:#8A7A6A;margin-top:10px;" data-en="We'll contact you within 24 hours via WhatsApp!" data-np="हामी २४ घण्टाभित्र WhatsApp मार्फत सम्पर्क गर्नेछौं!">We contact you within 24 hours via WhatsApp! 📱</div>
     </div>
   </div>
 </div>
@@ -627,14 +702,52 @@ function setCity(city){
   if(disp)disp.textContent=lang==="np"?cd.np:cd.name;
 }
 
+// ─── FIREBASE CONFIG ──────────────────────────────────────────────────────────
+const FB_CONFIG = {
+  apiKey: "AIzaSyBw3ee0DlyXv3dBhtltx-Gy_eif3dctG0E",
+  authDomain: "benidash-nepal-b6547.firebaseapp.com",
+  projectId: "benidash-nepal-b6547",
+  storageBucket: "benidash-nepal-b6547.firebasestorage.app",
+  messagingSenderId: "1043056015660",
+  appId: "1:1043056015660:web:5be53ea1a52053db4b9489"
+};
+
+async function saveToFirebase(collection, data){
+  try{
+    const url=`https://firestore.googleapis.com/v1/projects/${FB_CONFIG.projectId}/databases/(default)/documents/${collection}`;
+    const fields={};
+    Object.keys(data).forEach(k=>{
+      if(typeof data[k]==="string") fields[k]={stringValue:data[k]};
+      else if(typeof data[k]==="number") fields[k]={integerValue:data[k]};
+      else if(typeof data[k]==="boolean") fields[k]={booleanValue:data[k]};
+    });
+    const res=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({fields})});
+    return res.ok;
+  }catch(e){console.log("Firebase save:",e);return false;}
+}
+
+// ─── EARNINGS CALCULATOR ──────────────────────────────────────────────────────
+function calcEarn(hrs){
+  hrs=parseInt(hrs);
+  const d=Math.round(hrs*1.5)*50;
+  const m=d*26;
+  const sh=document.getElementById("hrs-show");
+  const se=document.getElementById("earn-show");
+  const sm=document.getElementById("earn-month-show");
+  if(sh)sh.textContent=hrs;
+  if(se)se.textContent=`NPR ${d.toLocaleString()}`;
+  if(sm)sm.textContent=`NPR ${m.toLocaleString()}/month`;
+}
+
 // ─── LAUNCH ───────────────────────────────────────────────────────────────────
 function launch(m){
   mode=m;
   document.getElementById("mode-select").style.display="none";
   document.getElementById("bkbtn").style.display="flex";
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  const ids={c:"ac",d:"ad",m:"am",j:"join"};
-  document.getElementById(ids[m]).classList.add("active");
+  const ids={c:"ac",d:"ad",m:"am",j:"join",r:"ar"};
+  const el=document.getElementById(ids[m]);
+  if(el)el.classList.add("active");
   setCity(document.getElementById("city-select").value||"beni");
   if(m==="c")renderM();
   if(m==="d"){initDMap();renderDSheet();}
@@ -1002,26 +1115,78 @@ function accMNotif(){
 function decMNotif(){document.getElementById("rnotif").style.display="none";}
 
 // ══════════════════════════════════════
-// JOIN MERCHANT
+// JOIN MERCHANT — saves to Firebase
 // ══════════════════════════════════════
-function submitMerchant(){
-  const bname=document.getElementById("f-bname")?.value;
+async function submitMerchant(){
+  const bname=document.getElementById("f-bname")?.value.trim();
   const btype=document.getElementById("f-btype")?.value;
-  const phone=document.getElementById("f-phone")?.value;
+  const phone=document.getElementById("f-phone")?.value.trim();
+  const addr=document.getElementById("f-addr")?.value.trim();
+  const owner=document.getElementById("f-oname")?.value.trim();
+  const city=document.getElementById("f-city")?.value;
+  const sell=document.getElementById("f-sell")?.value.trim();
   if(!bname||!btype||!phone){
     showToast(t("Please fill required fields!","आवश्यक फिल्डहरू भर्नुस्!"));
     return;
   }
-  showToast(t(`✅ Application sent! We'll contact ${phone} within 24 hrs!`,`✅ आवेदन पठाइयो! हामी २४ घण्टामा ${phone} मा सम्पर्क गर्नेछौं!`));
-  // In real app: save to Firebase
+  showToast(t("Submitting...","पठाउँदैछ..."));
+  const data={
+    businessName:bname,
+    businessType:btype,
+    phone:phone,
+    address:addr||"",
+    ownerName:owner||"",
+    city:city||"Beni",
+    whatTheySell:sell||"",
+    status:"pending",
+    appliedAt:new Date().toISOString(),
+    source:"benidash-app"
+  };
+  const saved=await saveToFirebase("merchant_applications",data);
+  showToast(saved
+    ?t(`✅ Application sent! We'll WhatsApp ${phone} in 24hrs!`,`✅ आवेदन पठाइयो! हामी ${phone} मा सम्पर्क गर्छौं!`)
+    :t(`✅ Application received! We'll call ${phone} soon!`,`✅ आवेदन प्राप्त! हामी ${phone} मा सम्पर्क गर्छौं!`)
+  );
   setTimeout(()=>{
-    document.getElementById("f-bname").value="";
-    document.getElementById("f-btype").value="";
-    document.getElementById("f-phone").value="";
-    document.getElementById("f-addr").value="";
-    document.getElementById("f-oname").value="";
-    document.getElementById("f-sell").value="";
-  },2000);
+    ["f-bname","f-phone","f-addr","f-oname","f-sell"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
+    if(document.getElementById("f-btype"))document.getElementById("f-btype").value="";
+  },1500);
+}
+
+// ══════════════════════════════════════
+// JOIN RIDER — saves to Firebase
+// ══════════════════════════════════════
+async function submitRider(){
+  const name=document.getElementById("r-name")?.value.trim();
+  const phone=document.getElementById("r-phone")?.value.trim();
+  const vehicle=document.getElementById("r-vehicle")?.value;
+  const city=document.getElementById("r-city")?.value;
+  const plate=document.getElementById("r-plate")?.value.trim();
+  const hours=document.getElementById("r-hours")?.value;
+  if(!name||!phone||!vehicle){
+    showToast(t("Please fill required fields!","आवश्यक फिल्डहरू भर्नुस्!"));
+    return;
+  }
+  showToast(t("Submitting...","पठाउँदैछ..."));
+  const data={
+    fullName:name,
+    phone:phone,
+    vehicleType:vehicle,
+    city:city||"Beni",
+    vehicleNumber:plate||"",
+    availableHours:hours||"Flexible",
+    status:"pending",
+    appliedAt:new Date().toISOString(),
+    source:"benidash-app"
+  };
+  const saved=await saveToFirebase("rider_applications",data);
+  showToast(saved
+    ?t(`✅ Application sent! We'll WhatsApp ${phone} in 24hrs!`,`✅ आवेदन पठाइयो! हामी ${phone} मा सम्पर्क गर्छौं!`)
+    :t(`✅ Application received! We'll call ${phone} soon!`,`✅ आवेदन प्राप्त! हामी ${phone} मा सम्पर्क गर्छौं!`)
+  );
+  setTimeout(()=>{
+    ["r-name","r-phone","r-plate"].forEach(id=>{const el=document.getElementById(id);if(el)el.value="";});
+  },1500);
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────

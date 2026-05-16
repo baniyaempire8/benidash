@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BeniDash Nepal — Legal Documents</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--or:#E8622A;--dk:#0A0806;--wh:#fff;--cr:#FFFBF7;--mu:#6B7280;--bo:#E5E7EB;--gr:#22C55E;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--cr);color:var(--dk);line-height:1.8;}
+body.np{font-family:'Noto Sans Devanagari','DM Sans',sans-serif;}
+.hero{background:linear-gradient(135deg,var(--dk),#1A0A04);padding:60px 24px 40px;text-align:center;}
+.hero-logo{font-size:48px;margin-bottom:10px;}
+.hero-brand{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#fff;margin-bottom:4px;}
+.hero-sub{font-size:13px;color:rgba(255,255,255,0.45);}
+nav{background:var(--wh);padding:12px 20px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--bo);position:sticky;top:0;z-index:50;}
+.nav-btn{padding:6px 14px;border-radius:50px;border:1.5px solid var(--bo);background:var(--cr);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--mu);transition:all 0.2s;}
+.nav-btn.on{background:var(--or);border-color:var(--or);color:#fff;}
+.lang-toggle{margin-left:auto;display:flex;gap:4px;}
+.lb{padding:6px 10px;border-radius:50px;border:1px solid var(--bo);background:transparent;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--mu);}
+.lb.on{background:var(--dk);color:#fff;border-color:var(--dk);}
+.doc{display:none;max-width:720px;margin:0 auto;padding:32px 24px 80px;}
+.doc.active{display:block;}
+.doc-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:6px;color:var(--dk);}
+.doc-np{font-family:'Noto Sans Devanagari',sans-serif;font-size:14px;color:var(--or);margin-bottom:4px;}
+.doc-meta{font-size:12px;color:var(--mu);margin-bottom:28px;padding-bottom:16px;border-bottom:2px solid var(--or);}
+h2{font-size:16px;font-weight:800;margin:24px 0 8px;color:var(--dk);}
+h2.np{font-family:'Noto Sans Devanagari',sans-serif;}
+p{font-size:14px;color:#374151;margin-bottom:10px;line-height:1.8;}
+p.np{font-family:'Noto Sans Devanagari',sans-serif;font-size:13px;}
+ul{padding-left:20px;margin-bottom:12px;}
+li{font-size:14px;color:#374151;margin-bottom:6px;line-height:1.7;}
+li.np{font-family:'Noto Sans Devanagari',sans-serif;font-size:13px;}
+.highlight{background:rgba(232,98,42,0.08);border-left:4px solid var(--or);padding:14px 18px;border-radius:0 12px 12px 0;margin:16px 0;}
+.highlight p{margin:0;font-weight:600;}
+.green-box{background:rgba(34,197,94,0.08);border-left:4px solid var(--gr);padding:14px 18px;border-radius:0 12px 12px 0;margin:16px 0;}
+.green-box p{margin:0;}
+.warn{background:rgba(239,68,68,0.06);border-left:4px solid #EF4444;padding:14px 18px;border-radius:0 12px 12px 0;margin:16px 0;}
+.warn p{margin:0;color:#DC2626;}
+.contact-box{background:var(--wh);border-radius:16px;padding:20px;border:1.5px solid var(--bo);margin-top:24px;}
+.contact-box h3{font-size:14px;font-weight:800;margin-bottom:12px;}
+.contact-row{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--mu);margin-bottom:8px;}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px;}
+th{background:var(--or);color:#fff;padding:10px 12px;text-align:left;}
+td{padding:10px 12px;border-bottom:1px solid var(--bo);}
+tr:last-child td{border-bottom:none;}
+.sign-box{background:var(--wh);border:2px dashed var(--bo);border-radius:14px;padding:20px;margin-top:16px;text-align:center;}
+.sign-box p{font-size:12px;color:var(--mu);margin:0;}
+@media(max-width:600px){.doc{padding:20px 16px 80px;}}
+</style>
+</head>
+<body id="body">
+
+<div class="hero">
+  <div class="hero-logo">⚖️</div>
+  <div class="hero-brand">BeniDash Nepal</div>
+  <div class="hero-sub">Legal Documents · कानुनी कागजातहरू · benidash.com</div>
+</div>
+
+<nav>
+  <button class="nav-btn on" onclick="showDoc('privacy')">🔒 Privacy Policy</button>
+  <button class="nav-btn" onclick="showDoc('terms')">📋 Terms of Service</button>
+  <button class="nav-btn" onclick="showDoc('merchant')">🏪 Merchant Agreement</button>
+  <button class="nav-btn" onclick="showDoc('rider')">🛵 Rider Agreement</button>
+  <button class="nav-btn" onclick="showDoc('refund')">💰 Refund Policy</button>
+  <div class="lang-toggle">
+    <button class="lb on" onclick="setLang('en')">EN</button>
+    <button class="lb" onclick="setLang('np')">नेपाली</button>
+  </div>
+</nav>
+
+<!-- ══ PRIVACY POLICY ══ -->
+<div class="doc active" id="privacy">
+  <div class="doc-title" data-en="Privacy Policy" data-np="गोपनीयता नीति">Privacy Policy</div>
+  <div class="doc-np">गोपनीयता नीति</div>
+  <div class="doc-meta">BeniDash Nepal · BeniDash Pvt. Ltd. · Beni, Myagdi, Nepal · Last updated: May 2026</div>
+
+  <div class="highlight"><p data-en="Your privacy is important to us. BeniDash Nepal is committed to protecting your personal information." data-np="तपाईंको गोपनीयता हाम्रो लागि महत्त्वपूर्ण छ। BeniDash Nepal तपाईंको व्यक्तिगत जानकारी सुरक्षित राख्न प्रतिबद्ध छ।">Your privacy is important to us. BeniDash Nepal is committed to protecting your personal information.</p></div>
+
+  <h2 data-en="1. Information We Collect" data-np="१. हामीले सङ्कलन गर्ने जानकारी">1. Information We Collect</h2>
+  <ul>
+    <li data-en="Phone number — for account verification via OTP" data-np="फोन नम्बर — OTP मार्फत खाता प्रमाणीकरणका लागि">Phone number — for account verification via OTP</li>
+    <li data-en="Name — for delivery and communication" data-np="नाम — डेलिभरी र सञ्चारका लागि">Name — for delivery and communication</li>
+    <li data-en="Delivery address — for order fulfillment" data-np="डेलिभरी ठेगाना — अर्डर पूर्तिका लागि">Delivery address — for order fulfillment</li>
+    <li data-en="GPS location — for live tracking (only when app is active)" data-np="GPS स्थान — लाइभ ट्र्याकिङका लागि (एप सक्रिय हुँदा मात्र)">GPS location — for live tracking (only when app is active)</li>
+    <li data-en="Order history — for improving your experience" data-np="अर्डर इतिहास — तपाईंको अनुभव सुधार्नका लागि">Order history — for improving your experience</li>
+    <li data-en="Device information — for app optimization" data-np="यन्त्र जानकारी — एप अनुकूलनका लागि">Device information — for app optimization</li>
+  </ul>
+
+  <h2 data-en="2. How We Use Your Information" data-np="२. हामी तपाईंको जानकारी कसरी प्रयोग गर्छौं">2. How We Use Your Information</h2>
+  <ul>
+    <li data-en="To process and deliver your orders" data-np="तपाईंको अर्डर प्रक्रिया र डेलिभर गर्न">To process and deliver your orders</li>
+    <li data-en="To communicate about your order status via phone/WhatsApp" data-np="फोन/WhatsApp मार्फत अर्डर स्थिति बारे सञ्चार गर्न">To communicate about order status via phone/WhatsApp</li>
+    <li data-en="To improve our services and app experience" data-np="हाम्रो सेवा र एप अनुभव सुधार्न">To improve our services and app experience</li>
+    <li data-en="To verify identity and prevent fraud" data-np="पहिचान प्रमाणित गर्न र जालसाजी रोक्न">To verify identity and prevent fraud</li>
+    <li data-en="To comply with Nepal government legal requirements" data-np="नेपाल सरकारको कानुनी आवश्यकताहरू पूरा गर्न">To comply with Nepal government legal requirements</li>
+  </ul>
+
+  <h2 data-en="3. Information We Do NOT Share" data-np="३. हामीले साझा नगर्ने जानकारी">3. Information We Do NOT Share</h2>
+  <div class="green-box"><p data-en="We NEVER sell your personal data to third parties. Your phone number and personal information is never shared with advertisers or marketers." data-np="हामी तपाईंको व्यक्तिगत डेटा कहिल्यै तेस्रो पक्षलाई बेच्दैनौं। तपाईंको फोन नम्बर र व्यक्तिगत जानकारी कहिल्यै विज्ञापनदाताहरूसँग साझा गरिँदैन।">We NEVER sell your personal data. Your phone number is never shared with advertisers.</p></div>
+
+  <h2 data-en="4. Data Security" data-np="४. डेटा सुरक्षा">4. Data Security</h2>
+  <ul>
+    <li data-en="All data stored securely on Google Firebase servers" data-np="सबै डेटा Google Firebase सर्भरमा सुरक्षित रूपमा भण्डारण गरिएको">All data stored securely on Google Firebase servers</li>
+    <li data-en="HTTPS encryption for all data transmission" data-np="सबै डेटा प्रसारणका लागि HTTPS एन्क्रिप्शन">HTTPS encryption for all data transmission</li>
+    <li data-en="OTP phone verification protects your account" data-np="OTP फोन प्रमाणीकरणले तपाईंको खाता सुरक्षित गर्छ">OTP phone verification protects your account</li>
+    <li data-en="Limited staff access to personal data" data-np="व्यक्तिगत डेटामा सीमित कर्मचारी पहुँच">Limited staff access to personal data</li>
+  </ul>
+
+  <h2 data-en="5. Your Rights" data-np="५. तपाईंको अधिकारहरू">5. Your Rights</h2>
+  <ul>
+    <li data-en="Request deletion of your personal data" data-np="तपाईंको व्यक्तिगत डेटा मेटाउन अनुरोध गर्न">Request deletion of your personal data</li>
+    <li data-en="Request a copy of your data" data-np="तपाईंको डेटाको प्रतिलिपि अनुरोध गर्न">Request a copy of your data</li>
+    <li data-en="Opt out of promotional communications" data-np="प्रचारात्मक सञ्चारबाट बाहिर निस्कन">Opt out of promotional communications</li>
+    <li data-en="Contact us to correct inaccurate data" data-np="गलत डेटा सच्याउन हामीलाई सम्पर्क गर्न">Contact us to correct inaccurate data</li>
+  </ul>
+
+  <h2 data-en="6. Location Data" data-np="६. स्थान डेटा">6. Location Data</h2>
+  <p data-en="GPS location is collected only when the app is actively being used for order tracking. Location data is not collected in the background. Riders' location is shared with customers during active deliveries only." data-np="GPS स्थान केवल अर्डर ट्र्याकिङका लागि एप सक्रिय रूपमा प्रयोग भइरहेको बेला सङ्कलन गरिन्छ। राइडरको स्थान सक्रिय डेलिभरीको समयमा मात्र ग्राहकसँग साझा गरिन्छ।">GPS location collected only during active order tracking. Not collected in background.</p>
+
+  <h2 data-en="7. Children's Privacy" data-np="७. बालबालिकाको गोपनीयता">7. Children's Privacy</h2>
+  <p data-en="BeniDash Nepal is not intended for users under 13 years of age. We do not knowingly collect personal information from children." data-np="BeniDash Nepal १३ वर्षभन्दा कम उमेरका प्रयोगकर्ताका लागि होइन।">BeniDash Nepal is not intended for users under 13 years of age.</p>
+
+  <div class="contact-box">
+    <h3>📧 <span data-en="Privacy Questions?" data-np="गोपनीयता प्रश्नहरू?">Privacy Questions? Contact Us:</span></h3>
+    <div class="contact-row">📧 <span>support@benidash.com</span></div>
+    <div class="contact-row">📱 <span>manoj@benidash.com</span></div>
+    <div class="contact-row">📍 <span data-en="BeniDash Pvt. Ltd., Beni Bazaar, Myagdi, Nepal" data-np="BeniDash Pvt. Ltd., बेनी बजार, मयागडी, नेपाल">BeniDash Pvt. Ltd., Beni Bazaar, Myagdi, Nepal</span></div>
+  </div>
+</div>
+
+<!-- ══ TERMS OF SERVICE ══ -->
+<div class="doc" id="terms">
+  <div class="doc-title" data-en="Terms of Service" data-np="सेवाका सर्तहरू">Terms of Service</div>
+  <div class="doc-np">सेवाका सर्तहरू</div>
+  <div class="doc-meta">BeniDash Nepal · Effective: May 2026 · Applies to all users</div>
+
+  <div class="highlight"><p data-en="By using BeniDash Nepal, you agree to these terms. Please read carefully." data-np="BeniDash Nepal प्रयोग गरेर, तपाईं यी सर्तहरूमा सहमत हुनुहुन्छ। कृपया ध्यानपूर्वक पढ्नुहोस्।">By using BeniDash Nepal, you agree to these terms. Please read carefully.</p></div>
+
+  <h2 data-en="1. Acceptance of Terms" data-np="१. सर्तहरूको स्वीकृति">1. Acceptance of Terms</h2>
+  <p data-en="By accessing or using BeniDash Nepal (benidash.com or BeniDash mobile app), you agree to be bound by these Terms of Service. If you do not agree, please do not use our service." data-np="BeniDash Nepal (benidash.com वा BeniDash मोबाइल एप) पहुँच गरेर वा प्रयोग गरेर, तपाईं यी सेवाका सर्तहरूद्वारा बाध्य हुन सहमत हुनुहुन्छ।">By using BeniDash Nepal, you agree to be bound by these Terms of Service.</p>
+
+  <h2 data-en="2. Service Description" data-np="२. सेवा विवरण">2. Service Description</h2>
+  <p data-en="BeniDash Nepal is a delivery platform that connects customers, merchants (restaurants, shops, pharmacies etc.), and delivery riders in Nepal. We provide the technology platform; actual delivery is performed by independent contractors (riders)." data-np="BeniDash Nepal एक डेलिभरी प्लेटफर्म हो जसले नेपालमा ग्राहकहरू, मर्चेन्टहरू र डेलिभरी राइडरहरूलाई जोड्छ।">BeniDash Nepal connects customers, merchants, and delivery riders in Nepal.</p>
+
+  <h2 data-en="3. User Accounts" data-np="३. प्रयोगकर्ता खाताहरू">3. User Accounts</h2>
+  <ul>
+    <li data-en="You must provide a valid Nepal phone number for account verification" data-np="खाता प्रमाणीकरणका लागि मान्य नेपाल फोन नम्बर प्रदान गर्नुपर्छ">Provide valid Nepal phone number for verification</li>
+    <li data-en="You are responsible for keeping your account secure" data-np="तपाईं आफ्नो खाता सुरक्षित राख्न जिम्मेवार हुनुहुन्छ">You are responsible for keeping your account secure</li>
+    <li data-en="You must be at least 16 years old to use BeniDash" data-np="BeniDash प्रयोग गर्न कम्तिमा १६ वर्षको हुनुपर्छ">Must be at least 16 years old to use BeniDash</li>
+    <li data-en="One person may not create multiple accounts" data-np="एक व्यक्तिले धेरै खाता बनाउन सक्दैन">One person may not create multiple accounts</li>
+  </ul>
+
+  <h2 data-en="4. Ordering & Payments" data-np="४. अर्डर र भुक्तानी">4. Ordering & Payments</h2>
+  <ul>
+    <li data-en="Prices shown include all applicable charges" data-np="देखाइएका मूल्यहरूमा सबै लागू शुल्कहरू समावेश छन्">Prices shown include all applicable charges</li>
+    <li data-en="Delivery fee of NPR 50 applies per order (may vary)" data-np="प्रति अर्डर NPR ५० डेलिभरी शुल्क लाग्छ (फरक हुन सक्छ)">Delivery fee NPR 50 per order (may vary)</li>
+    <li data-en="Cash on delivery is accepted" data-np="डेलिभरीमा नगद स्वीकार गरिन्छ">Cash on delivery accepted</li>
+    <li data-en="eSewa and digital payments where available" data-np="उपलब्ध भएका ठाउँमा eSewa र डिजिटल भुक्तानी">eSewa and digital payments where available</li>
+    <li data-en="You must pay the full amount shown before or upon delivery" data-np="डेलिभरी गर्नु अगाडि वा गर्दा देखाइएको पूरा रकम तिर्नुपर्छ">Pay full amount before or upon delivery</li>
+  </ul>
+
+  <h2 data-en="5. Cancellation Policy" data-np="५. रद्द नीति">5. Cancellation Policy</h2>
+  <ul>
+    <li data-en="Orders can be cancelled within 2 minutes of placing" data-np="अर्डर दिएको २ मिनेटभित्र रद्द गर्न सकिन्छ">Orders can be cancelled within 2 minutes</li>
+    <li data-en="Once merchant begins preparation, cancellation may not be possible" data-np="मर्चेन्टले तयारी सुरु गरेपछि रद्द सम्भव नहुन सक्छ">Once preparation begins, cancellation may not be possible</li>
+    <li data-en="Repeated cancellations may result in account suspension" data-np="बारम्बार रद्द गर्दा खाता निलम्बन हुन सक्छ">Repeated cancellations may result in account suspension</li>
+  </ul>
+
+  <h2 data-en="6. Prohibited Activities" data-np="६. निषेधित गतिविधिहरू">6. Prohibited Activities</h2>
+  <div class="warn"><p data-en="The following are strictly prohibited: Fake orders, fraud, harassment of riders or merchants, misuse of promotions, sharing account with others." data-np="निम्न कुराहरू कडाइसँग निषेध छन्: नक्कली अर्डर, जालसाजी, राइडर वा मर्चेन्टलाई उत्पीडन, प्रवर्द्धनको दुरुपयोग।">Strictly prohibited: Fake orders, fraud, harassment, misuse of promotions.</p></div>
+
+  <h2 data-en="7. Limitation of Liability" data-np="७. दायित्वको सीमा">7. Limitation of Liability</h2>
+  <p data-en="BeniDash Nepal acts as a platform connecting customers and merchants. We are not liable for the quality of products delivered by merchants, delays caused by traffic or weather, or damage to products during delivery." data-np="BeniDash Nepal ग्राहक र मर्चेन्टहरूलाई जोड्ने प्लेटफर्मको रूपमा काम गर्छ। मर्चेन्टहरूद्वारा डेलिभर गरिएका उत्पादनहरूको गुणस्तरका लागि हामी जिम्मेवार छैनौं।">BeniDash acts as platform only. Not liable for product quality or delivery delays.</p>
+
+  <h2 data-en="8. Governing Law" data-np="८. शासकीय कानुन">8. Governing Law</h2>
+  <p data-en="These Terms are governed by the laws of Nepal. Any disputes will be resolved under Nepal jurisdiction." data-np="यी सर्तहरू नेपालको कानुनद्वारा शासित छन्। कुनै पनि विवाद नेपाल क्षेत्राधिकारअन्तर्गत समाधान गरिनेछ।">These Terms are governed by the laws of Nepal.</p>
+
+  <div class="contact-box">
+    <h3>📧 <span data-en="Questions about Terms?" data-np="सर्तहरूबारे प्रश्न?">Questions? Contact Us:</span></h3>
+    <div class="contact-row">📧 <span>support@benidash.com</span></div>
+    <div class="contact-row">📱 <span>+977 (BeniDash Nepal)</span></div>
+  </div>
+</div>
+
+<!-- ══ MERCHANT AGREEMENT ══ -->
+<div class="doc" id="merchant">
+  <div class="doc-title" data-en="Merchant Partner Agreement" data-np="मर्चेन्ट साझेदार सम्झौता">Merchant Partner Agreement</div>
+  <div class="doc-np">मर्चेन्ट साझेदार सम्झौता</div>
+  <div class="doc-meta">BeniDash Nepal · For all business partners · Beni, Myagdi & Nepal</div>
+
+  <div class="green-box"><p data-en="Welcome to BeniDash Nepal! By joining as a merchant, you agree to this agreement. First 3 months: 0% commission. After: 10% per order." data-np="BeniDash Nepal मा स्वागत छ! मर्चेन्टको रूपमा सामेल भएर, तपाईं यस सम्झौतामा सहमत हुनुहुन्छ। पहिलो ३ महिना: ०% कमिसन। पछि: प्रति अर्डर १०%।">Welcome! First 3 months: 0% commission. After: 10% per order.</p></div>
+
+  <h2 data-en="1. Merchant Responsibilities" data-np="१. मर्चेन्टको जिम्मेवारीहरू">1. Merchant Responsibilities</h2>
+  <ul>
+    <li data-en="Provide accurate menu/product information and prices" data-np="सटीक मेनु/उत्पादन जानकारी र मूल्यहरू प्रदान गर्नुस्">Provide accurate menu/product information and prices</li>
+    <li data-en="Prepare orders within the stated preparation time" data-np="उल्लिखित तयारी समयभित्र अर्डरहरू तयार गर्नुस्">Prepare orders within the stated preparation time</li>
+    <li data-en="Maintain food safety and hygiene standards" data-np="खाद्य सुरक्षा र स्वच्छता मापदण्डहरू कायम राख्नुस्">Maintain food safety and hygiene standards</li>
+    <li data-en="Keep app status updated (Open/Closed)" data-np="एप स्थिति अद्यावधिक राख्नुस् (खुला/बन्द)">Keep app status updated (Open/Closed)</li>
+    <li data-en="Notify BeniDash of any menu or price changes" data-np="कुनै मेनु वा मूल्य परिवर्तनको BeniDash लाई जानकारी दिनुस्">Notify BeniDash of any menu or price changes</li>
+    <li data-en="Have valid business registration (or apply within 3 months)" data-np="मान्य व्यापार दर्ता राख्नुस् (वा ३ महिनाभित्र आवेदन गर्नुस्)">Have valid business registration</li>
+  </ul>
+
+  <h2 data-en="2. Commission Structure" data-np="२. कमिसन संरचना">2. Commission Structure</h2>
+  <table>
+    <tr><th data-en="Period" data-np="अवधि">Period</th><th data-en="Commission" data-np="कमिसन">Commission</th><th data-en="Notes" data-np="नोट">Notes</th></tr>
+    <tr><td data-en="First 3 months" data-np="पहिलो ३ महिना">First 3 months</td><td style="color:#22C55E;font-weight:800;">0%</td><td data-en="FREE! Build your customer base" data-np="निःशुल्क! आफ्नो ग्राहक आधार बनाउनुस्">FREE! Build your customer base</td></tr>
+    <tr><td data-en="After 3 months" data-np="३ महिना पछि">After 3 months</td><td style="color:#E8622A;font-weight:800;">10%</td><td data-en="Per order, deducted from payment" data-np="प्रति अर्डर, भुक्तानीबाट कटाइन्छ">Per order, from payment</td></tr>
+    <tr><td data-en="Premium partners" data-np="प्रिमियम साझेदारहरू">Premium partners</td><td style="color:#8B5CF6;font-weight:800;">5-8%</td><td data-en="High volume merchants (contact us)" data-np="उच्च मात्रा मर्चेन्टहरू (हामीलाई सम्पर्क गर्नुस्)">High volume (contact us)</td></tr>
+  </table>
+
+  <h2 data-en="3. Payment Terms" data-np="३. भुक्तानी सर्तहरू">3. Payment Terms</h2>
+  <ul>
+    <li data-en="Cash orders: Rider collects cash and transfers to merchant same day" data-np="नगद अर्डर: राइडरले नगद सङ्कलन गरी उही दिन मर्चेन्टलाई हस्तान्तरण गर्छ">Cash: Rider collects and transfers same day</li>
+    <li data-en="eSewa payments: Transferred to merchant within 24 hours" data-np="eSewa भुक्तानी: २४ घण्टाभित्र मर्चेन्टलाई हस्तान्तरण">eSewa: Transferred within 24 hours</li>
+    <li data-en="Weekly settlement statement provided every Monday" data-np="साप्ताहिक निपटान विवरण हरेक सोमबार प्रदान गरिन्छ">Weekly settlement every Monday</li>
+  </ul>
+
+  <h2 data-en="4. BeniDash Responsibilities" data-np="४. BeniDash को जिम्मेवारीहरू">4. BeniDash Responsibilities</h2>
+  <ul>
+    <li data-en="Provide the technology platform at no setup cost" data-np="कुनै सेटअप लागत बिना प्रविधि प्लेटफर्म प्रदान गर्नु">Provide technology platform at no setup cost</li>
+    <li data-en="Handle delivery logistics through our rider network" data-np="हाम्रो राइडर नेटवर्कमार्फत डेलिभरी लजिस्टिक्स व्यवस्थापन गर्नु">Handle delivery logistics</li>
+    <li data-en="Provide customer support for order issues" data-np="अर्डर समस्याहरूका लागि ग्राहक सहयोग प्रदान गर्नु">Provide customer support</li>
+    <li data-en="Market your business to customers in your area" data-np="तपाईंको क्षेत्रका ग्राहकहरूलाई तपाईंको व्यवसाय मार्केट गर्नु">Market your business to local customers</li>
+  </ul>
+
+  <h2 data-en="5. Termination" data-np="५. समाप्ति">5. Termination</h2>
+  <p data-en="Either party may terminate this agreement with 7 days written notice. BeniDash reserves the right to immediately suspend merchants for fraud, safety violations, or repeated poor service." data-np="दुवै पक्षले ७ दिनको लिखित सूचनाद्वारा यो सम्झौता समाप्त गर्न सक्छन्।">Either party may terminate with 7 days written notice.</p>
+
+  <div class="sign-box">
+    <p data-en="By submitting the merchant application on BeniDash Nepal app, you confirm you have read and agree to this Merchant Partner Agreement." data-np="BeniDash Nepal एपमा मर्चेन्ट आवेदन पेश गरेर, तपाईं यो सम्झौता पढेर सहमत भएको पुष्टि गर्नुहुन्छ।">By submitting the merchant application, you agree to this Merchant Partner Agreement.</p>
+  </div>
+
+  <div class="contact-box">
+    <h3>📧 <span data-en="Merchant Support" data-np="मर्चेन्ट सहयोग">Merchant Support</span></h3>
+    <div class="contact-row">📧 <span>merchants@benidash.com</span></div>
+    <div class="contact-row">📱 <span>WhatsApp: Available 8am-8pm NPT</span></div>
+  </div>
+</div>
+
+<!-- ══ RIDER AGREEMENT ══ -->
+<div class="doc" id="rider">
+  <div class="doc-title" data-en="Delivery Partner Agreement" data-np="डेलिभरी साझेदार सम्झौता">Delivery Partner Agreement</div>
+  <div class="doc-np">डेलिभरी साझेदार सम्झौता</div>
+  <div class="doc-meta">BeniDash Nepal · For all delivery partners · Flexible work · Nepal</div>
+
+  <div class="green-box"><p data-en="Welcome to the BeniDash rider team! You work as an independent contractor — work any hours you choose. NPR 50 per delivery + tips!" data-np="BeniDash राइडर टिममा स्वागत! तपाईं स्वतन्त्र ठेकेदारको रूपमा काम गर्नुहुन्छ — आफूले रोजेको घण्टा काम गर्नुस्। प्रति डेलिभरी NPR ५० + टिप!">Welcome! Work any hours you choose. NPR 50 per delivery + tips!</p></div>
+
+  <h2 data-en="1. Work Arrangement" data-np="१. काम व्यवस्था">1. Work Arrangement</h2>
+  <ul>
+    <li data-en="You are an independent contractor, not an employee of BeniDash" data-np="तपाईं स्वतन्त्र ठेकेदार हुनुहुन्छ, BeniDash को कर्मचारी होइन">You are an independent contractor, not an employee</li>
+    <li data-en="Work any hours you choose — no minimum hour requirement" data-np="आफूले रोजेको घण्टा काम गर्नुस् — न्यूनतम घण्टाको आवश्यकता छैन">Work any hours — no minimum hours required</li>
+    <li data-en="Go online or offline anytime through the app" data-np="जुनसुकै बेला एपमार्फत अनलाइन वा अफलाइन जानुस्">Go online/offline anytime through the app</li>
+    <li data-en="You may work for other platforms simultaneously" data-np="तपाईं एकैसाथ अन्य प्लेटफर्महरूका लागि काम गर्न सक्नुहुन्छ">You may work for other platforms simultaneously</li>
+  </ul>
+
+  <h2 data-en="2. Earnings" data-np="२. कमाइ">2. Earnings</h2>
+  <table>
+    <tr><th data-en="Type" data-np="प्रकार">Type</th><th data-en="Amount" data-np="रकम">Amount</th><th data-en="Notes" data-np="नोट">Notes</th></tr>
+    <tr><td data-en="Delivery fee" data-np="डेलिभरी शुल्क">Delivery fee</td><td style="color:#22C55E;font-weight:800;">NPR 50</td><td data-en="Per successful delivery" data-np="प्रति सफल डेलिभरी">Per delivery</td></tr>
+    <tr><td data-en="Customer tips" data-np="ग्राहक टिप">Customer tips</td><td style="color:#E8622A;font-weight:800;">100%</td><td data-en="All tips go to you!" data-np="सबै टिप तपाईंलाई!">All yours!</td></tr>
+    <tr><td data-en="Bonus orders" data-np="बोनस अर्डर">Bonus (future)</td><td style="color:#8B5CF6;font-weight:800;">+NPR 20</td><td data-en="Peak hours/high demand (coming)" data-np="पिक घण्टा/उच्च माग (आउँदैछ)">Peak hours (coming soon)</td></tr>
+  </table>
+
+  <h2 data-en="3. Payment Schedule" data-np="३. भुक्तानी तालिका">3. Payment Schedule</h2>
+  <ul>
+    <li data-en="Cash orders: Keep the cash — settle commission weekly" data-np="नगद अर्डर: नगद राख्नुस् — साप्ताहिक कमिसन तिर्नुस्">Cash orders: Keep cash — settle weekly</li>
+    <li data-en="Weekly payment every Friday via eSewa or cash" data-np="हरेक शुक्रबार eSewa वा नगदमार्फत साप्ताहिक भुक्तानी">Weekly payment every Friday</li>
+    <li data-en="Real-time earnings visible in your rider app" data-np="राइडर एपमा रियल-टाइम कमाइ देख्न सकिन्छ">Real-time earnings in rider app</li>
+  </ul>
+
+  <h2 data-en="4. Rider Requirements" data-np="४. राइडर आवश्यकताहरू">4. Rider Requirements</h2>
+  <ul>
+    <li data-en="Valid Nepal citizenship (नागरिकता) — for verification" data-np="मान्य नेपाल नागरिकता — प्रमाणीकरणका लागि">Valid Nepal citizenship for verification</li>
+    <li data-en="Smartphone with internet connection" data-np="इन्टरनेट जडानसहित स्मार्टफोन">Smartphone with internet connection</li>
+    <li data-en="If motorcycle: valid driving license and insurance" data-np="मोटरसाइकल भए: मान्य ड्राइभिङ लाइसेन्स र बिमा">Motorcycle riders: valid license + insurance</li>
+    <li data-en="Must be 18+ years old" data-np="१८+ वर्षको हुनुपर्छ">Must be 18+ years old</li>
+    <li data-en="Walking delivery: 18+ years, Beni Bazaar center area only" data-np="पैदल डेलिभरी: १८+, बेनी बजार केन्द्र क्षेत्र मात्र">Walking delivery: 18+, Beni center only</li>
+  </ul>
+
+  <h2 data-en="5. Rider Conduct" data-np="५. राइडर आचरण">5. Rider Conduct</h2>
+  <ul>
+    <li data-en="Deliver orders promptly and professionally" data-np="तुरुन्त र व्यावसायिक रूपमा अर्डर डेलिभर गर्नुस्">Deliver orders promptly and professionally</li>
+    <li data-en="Treat customers and merchants respectfully" data-np="ग्राहक र मर्चेन्टलाई सम्मानपूर्वक व्यवहार गर्नुस्">Treat customers and merchants respectfully</li>
+    <li data-en="Do not open or tamper with delivery packages" data-np="डेलिभरी प्याकेजहरू नखोल्नुस् र छेडछाड नगर्नुस्">Do not open or tamper with packages</li>
+    <li data-en="Update order status in app accurately" data-np="एपमा अर्डर स्थिति सटीक रूपमा अद्यावधिक गर्नुस्">Update order status accurately in app</li>
+    <li data-en="Maintain a minimum rating of 3.5 stars" data-np="न्यूनतम ३.५ स्टार रेटिङ कायम राख्नुस्">Maintain minimum 3.5 star rating</li>
+  </ul>
+
+  <h2 data-en="6. Safety" data-np="६. सुरक्षा">6. Safety</h2>
+  <div class="warn"><p data-en="Always follow Nepal traffic laws. Wear helmet when riding. BeniDash is not responsible for accidents during delivery. Riders are encouraged to have personal accident insurance." data-np="सधैं नेपाल ट्राफिक कानुनहरू पालना गर्नुस्। सवारी गर्दा हेलमेट लगाउनुस्। BeniDash डेलिभरीको समय दुर्घटनाका लागि जिम्मेवार छैन।">Always follow traffic laws. Wear helmet. BeniDash not responsible for accidents.</p></div>
+
+  <h2 data-en="7. Deactivation" data-np="७. निष्क्रियता">7. Deactivation</h2>
+  <p data-en="BeniDash may deactivate a rider account for: fraud, theft, harassment, consistent low ratings, or serious safety violations. Riders may stop working at any time." data-np="BeniDash निम्न कारणहरूले राइडर खाता निष्क्रिय गर्न सक्छ: जालसाजी, चोरी, उत्पीडन, निरन्तर कम रेटिङ। राइडरहरू जुनसुकै बेला काम बन्द गर्न सक्छन्।">BeniDash may deactivate for fraud, theft, or safety violations.</p>
+
+  <div class="sign-box">
+    <p data-en="By submitting the rider application on BeniDash Nepal app, you confirm you have read and agree to this Delivery Partner Agreement." data-np="BeniDash Nepal एपमा राइडर आवेदन पेश गरेर, तपाईं यो सम्झौता पढेर सहमत भएको पुष्टि गर्नुहुन्छ।">By submitting the rider application, you agree to this Delivery Partner Agreement.</p>
+  </div>
+
+  <div class="contact-box">
+    <h3>📧 <span data-en="Rider Support" data-np="राइडर सहयोग">Rider Support</span></h3>
+    <div class="contact-row">📧 <span>riders@benidash.com</span></div>
+    <div class="contact-row">📱 <span>WhatsApp: Available 8am-9pm NPT</span></div>
+  </div>
+</div>
+
+<!-- ══ REFUND POLICY ══ -->
+<div class="doc" id="refund">
+  <div class="doc-title" data-en="Refund & Cancellation Policy" data-np="फिर्ता र रद्द नीति">Refund & Cancellation Policy</div>
+  <div class="doc-np">फिर्ता र रद्द नीति</div>
+  <div class="doc-meta">BeniDash Nepal · Customer-friendly policy · Nepal</div>
+
+  <div class="highlight"><p data-en="We want every BeniDash experience to be great! If something goes wrong, we will make it right." data-np="हामी चाहन्छौं कि प्रत्येक BeniDash अनुभव राम्रो होस्! केही गलत भयो भने, हामी सच्याउनेछौं।">We want every BeniDash experience to be great! If something goes wrong, we will make it right.</p></div>
+
+  <h2 data-en="When You Can Get a Refund" data-np="कहिले फिर्ता पाउन सकिन्छ">When You Can Get a Refund</h2>
+  <div class="green-box">
+    <ul style="margin:0;padding-left:18px;">
+      <li data-en="Wrong item delivered" data-np="गलत सामान डेलिभर भयो">Wrong item delivered ✅</li>
+      <li data-en="Item missing from order" data-np="अर्डरबाट सामान छुट्यो">Item missing from order ✅</li>
+      <li data-en="Order never arrived" data-np="अर्डर आएन">Order never arrived ✅</li>
+      <li data-en="Food safety issue (spoiled/contaminated)" data-np="खाद्य सुरक्षा समस्या (बिग्रेको/दूषित)">Food safety issue ✅</li>
+      <li data-en="Merchant cancelled your order" data-np="मर्चेन्टले तपाईंको अर्डर रद्द गर्यो">Merchant cancelled your order ✅</li>
+    </ul>
+  </div>
+
+  <h2 data-en="Refund Process" data-np="फिर्ता प्रक्रिया">Refund Process</h2>
+  <ul>
+    <li data-en="Contact us within 1 hour of delivery: support@benidash.com or WhatsApp" data-np="डेलिभरीको १ घण्टाभित्र सम्पर्क गर्नुस्: support@benidash.com वा WhatsApp">Contact us within 1 hour of delivery</li>
+    <li data-en="Provide order number and description of issue" data-np="अर्डर नम्बर र समस्याको विवरण दिनुस्">Provide order number and issue description</li>
+    <li data-en="Photo evidence helps resolve issues faster" data-np="फोटो प्रमाणले समस्या छिटो समाधान गर्न मद्दत गर्छ">Photo evidence helps resolve faster</li>
+    <li data-en="Refunds processed within 24-48 hours" data-np="२४-४८ घण्टाभित्र फिर्ता प्रक्रिया गरिन्छ">Refunds within 24-48 hours</li>
+  </ul>
+
+  <h2 data-en="Refund Methods" data-np="फिर्ता विधिहरू">Refund Methods</h2>
+  <ul>
+    <li data-en="Cash payment: Cash refund through our rider or agent" data-np="नगद भुक्तानी: हाम्रो राइडर वा एजेन्टमार्फत नगद फिर्ता">Cash: Refund through rider or agent</li>
+    <li data-en="eSewa payment: Refund to your eSewa account" data-np="eSewa भुक्तानी: तपाईंको eSewa खातामा फिर्ता">eSewa: Refund to your eSewa account</li>
+    <li data-en="BeniDash credit: Applied to next order (fastest option)" data-np="BeniDash क्रेडिट: अर्को अर्डरमा लागू (सबैभन्दा छिटो विकल्प)">BeniDash credit for next order (fastest)</li>
+  </ul>
+
+  <div class="contact-box">
+    <h3>🆘 <span data-en="Need Help?" data-np="मद्दत चाहिन्छ?">Need Help?</span></h3>
+    <div class="contact-row">📧 <span>support@benidash.com</span></div>
+    <div class="contact-row">📱 <span>WhatsApp support available daily</span></div>
+    <div class="contact-row">⏰ <span data-en="Response time: Within 2 hours (8am-8pm NPT)" data-np="प्रतिक्रिया समय: २ घण्टाभित्र (बिहान ८ - राति ८)">Response: Within 2 hours (8am-8pm NPT)</span></div>
+  </div>
+</div>
+
+<script>
+let lang="en";
+function showDoc(id){
+  document.querySelectorAll(".doc").forEach(d=>d.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("on"));
+  event.target.classList.add("on");
+  window.scrollTo(0,0);
+}
+function setLang(l){
+  lang=l;
+  document.getElementById("body").classList.toggle("np",l==="np");
+  document.querySelectorAll("[data-en]").forEach(el=>{
+    if(el.tagName!=="INPUT"&&el.tagName!=="SELECT")
+      el.textContent=l==="np"?el.dataset.np:el.dataset.en;
+  });
+  document.querySelectorAll(".lb").forEach((b,i)=>b.classList.toggle("on",(i===0&&l==="en")||(i===1&&l==="np")));
+}
+</script>
+</body>
+</html>
