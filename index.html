@@ -898,7 +898,93 @@ function renderCart(){
 }
 
 function doOrder(){
-  showToast(t("✅ Order placed! Tracking...","✅ अर्डर भयो! ट्र्याकिङ..."));
+  // Check if customer info exists
+  const cName=localStorage.getItem("bd-name");
+  const cPhone=localStorage.getItem("bd-phone");
+  if(!cName||!cPhone){
+    showCustomerLogin();
+    return;
+  }
+  placeOrder(cName,cPhone);
+}
+
+function showCustomerLogin(){
+  // Remove existing popup if any
+  const ex=document.getElementById("clogin-popup");
+  if(ex)ex.remove();
+  const popup=document.createElement("div");
+  popup.id="clogin-popup";
+  popup.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:999;display:flex;align-items:flex-end;backdrop-filter:blur(4px);";
+  popup.innerHTML=`
+    <div style="background:#fff;border-radius:22px 22px 0 0;padding:24px 22px 36px;width:100%;max-width:430px;margin:0 auto;border-top:3px solid var(--or);">
+      <div style="width:40px;height:4px;background:#eee;border-radius:2px;margin:0 auto 18px;"></div>
+      <div style="font-size:18px;font-weight:800;margin-bottom:4px;">${t("Quick! Who are you? 👋","छिटो! तपाईं को हुनुहुन्छ? 👋")}</div>
+      <div style="font-size:12px;color:#8A7A6A;margin-bottom:18px;">${t("We need your name and phone so the rider can find you!","राइडरले तपाईंलाई फेला पार्न नाम र फोन चाहिन्छ!")}</div>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:11px;font-weight:700;color:#8A7A6A;display:block;margin-bottom:5px;">${t("Your Name *","तपाईंको नाम *")}</label>
+        <input id="cl-name" style="width:100%;padding:13px 16px;border:1.5px solid #EDE8E0;border-radius:13px;font-size:15px;font-family:inherit;outline:none;" placeholder="${t("Ram Bahadur / सीता देवी","Ram Bahadur / सीता देवी")}"/>
+      </div>
+      <div style="margin-bottom:18px;">
+        <label style="font-size:11px;font-weight:700;color:#8A7A6A;display:block;margin-bottom:5px;">${t("Nepal Phone Number *","नेपाल फोन नम्बर *")}</label>
+        <input id="cl-phone" type="tel" style="width:100%;padding:13px 16px;border:1.5px solid #EDE8E0;border-radius:13px;font-size:15px;font-family:inherit;outline:none;" placeholder="+977 984XXXXXXX"/>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;background:#FFF5E8;border-radius:12px;padding:10px 14px;">
+        <span style="font-size:18px;">🔒</span>
+        <span style="font-size:11px;color:#8A7A6A;">${t("Your info is only used for delivery. We never share it.","तपाईंको जानकारी डेलिभरीका लागि मात्र। कहिल्यै साझा गर्दैनौं।")}</span>
+      </div>
+      <button onclick="confirmLogin()" style="width:100%;padding:15px;background:var(--or);border:none;border-radius:15px;color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;">
+        🛵 ${t("Confirm & Place Order","पुष्टि गरी अर्डर गर्नुस्")}
+      </button>
+      <button onclick="document.getElementById('clogin-popup').remove()" style="width:100%;padding:12px;background:transparent;border:none;color:#8A7A6A;font-size:13px;cursor:pointer;font-family:inherit;margin-top:8px;">
+        ${t("← Back to Cart","← कार्टमा फर्कनुस्")}
+      </button>
+    </div>`;
+  document.body.appendChild(popup);
+  setTimeout(()=>document.getElementById("cl-name")?.focus(),300);
+}
+
+function confirmLogin(){
+  const name=document.getElementById("cl-name")?.value.trim();
+  const phone=document.getElementById("cl-phone")?.value.trim();
+  if(!name||name.length<2){
+    document.getElementById("cl-name").style.borderColor="var(--re)";
+    showToast(t("Please enter your name!","नाम हाल्नुस्!"));
+    return;
+  }
+  if(!phone||phone.length<7){
+    document.getElementById("cl-phone").style.borderColor="var(--re)";
+    showToast(t("Please enter valid phone!","मान्य फोन नम्बर हाल्नुस्!"));
+    return;
+  }
+  localStorage.setItem("bd-name",name);
+  localStorage.setItem("bd-phone",phone);
+  document.getElementById("clogin-popup").remove();
+  placeOrder(name,phone);
+}
+
+async function placeOrder(cName,cPhone){
+  const orderId="BD-"+Math.floor(1000+Math.random()*9000);
+  const subtotal=cTotal();
+  const total=subtotal+50;
+  const orderData={
+    orderId,
+    customerName:cName,
+    customerPhone:cPhone,
+    customerAddr:t("Beni Bazaar","बेनी बजार"),
+    merchantId:cart[0]?.mId||"r1",
+    merchantName:cart[0]?.mName||"Beni Kitchen",
+    items:JSON.stringify(cart.map(i=>({name:i.name,qty:i.qty,price:i.price}))),
+    subtotal,
+    deliveryFee:50,
+    total,
+    payment:"cash",
+    status:"new",
+    createdAt:new Date().toISOString(),
+  };
+  // Save to Firebase
+  await saveToFirebase("orders",orderData);
+  showToast(t(`✅ Order #${orderId} placed! Tracking...`,`✅ अर्डर #${orderId} भयो! ट्र्याकिङ...`));
+  cart=[];updCart();
   showTrack();
 }
 
