@@ -928,6 +928,11 @@ function showCustomerLogin(){
         <label style="font-size:11px;font-weight:700;color:#8A7A6A;display:block;margin-bottom:5px;">${t("Nepal Phone Number *","नेपाल फोन नम्बर *")}</label>
         <input id="cl-phone" type="tel" style="width:100%;padding:13px 16px;border:1.5px solid #EDE8E0;border-radius:13px;font-size:15px;font-family:inherit;outline:none;" placeholder="+977 984XXXXXXX"/>
       </div>
+      <div style="margin-bottom:14px;">
+        <label style="font-size:11px;font-weight:700;color:#8A7A6A;display:block;margin-bottom:5px;">📍 Landmark * (helps rider find you!)</label>
+        <input id="cl-landmark" style="width:100%;padding:13px 16px;border:1.5px solid #EDE8E0;border-radius:13px;font-size:13px;font-family:inherit;outline:none;" placeholder="e.g. Beni Hospital छेउमा, Bank अगाडि, School नजिक"/>
+        <div style="font-size:10px;color:#22C55E;margin-top:4px;">✅ Landmark = Rider finds you faster!</div>
+      </div>
       <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;background:#FFF5E8;border-radius:12px;padding:10px 14px;">
         <span style="font-size:18px;">🔒</span>
         <span style="font-size:11px;color:#8A7A6A;">${t("Your info is only used for delivery. We never share it.","तपाईंको जानकारी डेलिभरीका लागि मात्र। कहिल्यै साझा गर्दैनौं।")}</span>
@@ -956,13 +961,20 @@ function confirmLogin(){
     showToast(t("Please enter valid phone!","मान्य फोन नम्बर हाल्नुस्!"));
     return;
   }
+  const landmark=document.getElementById("cl-landmark")?.value.trim()||"";
+  if(!landmark||landmark.length<3){
+    document.getElementById("cl-landmark").style.borderColor="#EF4444";
+    showToast("Please add a landmark! 📍 Landmark थप्नुस्!");
+    return;
+  }
   localStorage.setItem("bd-name",name);
   localStorage.setItem("bd-phone",phone);
+  localStorage.setItem("bd-landmark",landmark);
   document.getElementById("clogin-popup").remove();
-  placeOrder(name,phone);
+  placeOrder(name,phone,landmark);
 }
 
-async function placeOrder(cName,cPhone){
+async function placeOrder(cName,cPhone,cLandmark=""){
   const orderId="BD-"+Math.floor(1000+Math.random()*9000);
   const subtotal=cTotal();
   const total=subtotal+50;
@@ -971,6 +983,7 @@ async function placeOrder(cName,cPhone){
     customerName:cName,
     customerPhone:cPhone,
     customerAddr:t("Beni Bazaar","बेनी बजार"),
+    landmark:cLandmark||localStorage.getItem("bd-landmark")||"",
     merchantId:cart[0]?.mId||"r1",
     merchantName:cart[0]?.mName||"Beni Kitchen",
     items:JSON.stringify(cart.map(i=>({name:i.name,qty:i.qty,price:i.price}))),
