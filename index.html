@@ -1042,8 +1042,18 @@ function initCustMap(){
 }
 
 function showSc(id){["chome","cdet","ccart","ctrack"].forEach(s=>document.getElementById(s).style.display=s===id?"block":"none");}
-function showHome(){showSc("chome");setNv("n-home");}
-function showCart(){showSc("ccart");renderCart();setNv("n-cart");}
+function showHome(){
+  showSc("chome");
+  setNv("n-home");
+  updCart();
+}
+function showCart(){
+  showSc("ccart");
+  renderCart();
+  setNv("n-cart");
+  const bar=document.getElementById("cbar");
+  if(bar)bar.classList.add("h");
+}
 function showTrack(){showSc("ctrack");renderTrack();setNv("n-track");}
 function setNv(id){document.querySelectorAll(".bni").forEach(n=>n.classList.remove("on"));document.getElementById(id)?.classList.add("on");}
 
